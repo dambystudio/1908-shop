@@ -58,7 +58,7 @@ export function CartDrawer({ children }: { children: React.ReactNode }) {
     return encodeURIComponent(message)
   }
 
-  const handleSendDM = () => {
+  const handleSendDM = async () => {
     // Track begin checkout
     trackBeginCheckout({
       totalValue: totalPrice,
@@ -78,18 +78,32 @@ export function CartDrawer({ children }: { children: React.ReactNode }) {
     })
 
     const message = generateDMMessage()
+    const decodedMessage = decodeURIComponent(message)
 
-    // Open Instagram DM with pre-filled message
-    // ig.me URL works on mobile (opens app) and desktop (opens web)
-    const instagramDMUrl = `https://ig.me/m/${getInstagramUsername()}?text=${message}`
-    window.open(instagramDMUrl, '_blank')
+    try {
+      // Copy message to clipboard first
+      await navigator.clipboard.writeText(decodedMessage)
 
-    // Show confirmation toast
-    toast({
-      title: '📱 Apertura Instagram...',
-      description: "Premi Invia per completare l'ordine",
-      duration: 4000,
-    })
+      // Show success toast with clear instructions
+      toast({
+        title: '✅ Messaggio copiato!',
+        description: 'Ora apriamo Instagram. Incolla (CTRL+V) il messaggio nella chat.',
+        duration: 6000,
+      })
+
+      // Wait a moment then open Instagram DM
+      setTimeout(() => {
+        window.open(`https://ig.me/m/${getInstagramUsername()}`, '_blank')
+      }, 800)
+    } catch (err) {
+      // Fallback if clipboard fails
+      toast({
+        title: '📱 Apertura Instagram',
+        description: 'Copia manualmente il messaggio dal riepilogo qui sotto',
+        duration: 5000,
+      })
+      window.open(`https://ig.me/m/${getInstagramUsername()}`, '_blank')
+    }
   }
 
   const handleRemoveItem = (item: (typeof items)[0]) => {
@@ -242,6 +256,22 @@ export function CartDrawer({ children }: { children: React.ReactNode }) {
                     />
                   </svg>
                   Invia ordine su Instagram
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    const message = decodeURIComponent(generateDMMessage())
+                    navigator.clipboard.writeText(message)
+                    toast({
+                      title: '📋 Copiato!',
+                      description: 'Messaggio copiato negli appunti',
+                      duration: 3000,
+                    })
+                  }}
+                >
+                  📋 Copia riepilogo ordine
                 </Button>
 
                 <Button
