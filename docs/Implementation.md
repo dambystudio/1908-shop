@@ -118,22 +118,23 @@ Sub-steps:
 
 Duration: ~8–10 days
 Dependencies: Stage 1
+Status: ✅ COMPLETED
 
 Sub-steps:
 
-- [ ] Define Tina collections: Product, Category with full schema & field validations
-- [ ] Implement product data loading (static generation w/ fallback or ISR)
-- [ ] Product listing pages (categories, competition filters)
-- [ ] Dynamic filters (competition, club, season, size availability)
-- [ ] Product detail page layout (gallery, details panel, disclaimers)
-- [ ] Customization module (name+number fields, validation, surcharge calculation)
-- [ ] Patch selection UI & price accumulation rules
-- [ ] Dynamic price calculator hook (base + surcharges + customization)
-- [ ] Virtual cart add/remove/update with persistence
-- [ ] IG DM link generator (encoded text) with fallback copy panel
-- [ ] Analytics events instrumentation (view_item, add_to_cart, begin_checkout_DM, click_igme)
-- [ ] Accessibility review (keyboard nav, ARIA labels, contrast checks)
-- [ ] Sitemap & robots, basic SEO metadata utilities
+- [x] Define Tina collections: Product, Category with full schema & field validations
+- [x] Implement product data loading (static generation w/ fallback or ISR)
+- [x] Product listing pages (categories, competition filters)
+- [x] Dynamic filters (competition, club, season, size availability)
+- [x] Product detail page layout (gallery, details panel, disclaimers)
+- [x] Customization module (name+number fields, validation, surcharge calculation)
+- [x] Patch selection UI & price accumulation rules
+- [x] Dynamic price calculator hook (base + surcharges + customization)
+- [x] Virtual cart add/remove/update with persistence
+- [x] IG DM link generator (encoded text) with fallback copy panel
+- [x] Analytics events instrumentation (view_item, add_to_cart, begin_checkout_DM, click_igme)
+- [x] Accessibility review (keyboard nav, ARIA labels, contrast checks)
+- [x] Sitemap & robots, basic SEO metadata utilities
 
 ### Stage 3: Advanced (R1 Scope)
 
