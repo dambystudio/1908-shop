@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert } from '@/components/ui/alert'
+import { useToast } from '@/hooks/use-toast'
 import { calculatePrice, validateCustomization } from '@/domains/product/price'
 import { useCart } from '@/domains/cart/cart-context'
 import { trackAddToCart } from '@/lib/analytics'
@@ -17,6 +18,7 @@ interface ProductConfiguratorProps {
 
 export function ProductConfigurator({ product }: ProductConfiguratorProps) {
   const { addItem } = useCart()
+  const { toast } = useToast()
 
   // State
   const [selectedSize, setSelectedSize] = useState<string>('')
@@ -101,15 +103,19 @@ export function ProductConfigurator({ product }: ProductConfiguratorProps) {
       patchesCount: selectedPatches.length,
     })
 
+    // Show success toast
+    toast({
+      title: '✓ Aggiunto al carrello',
+      description: `${product.name} - Taglia ${selectedSize}`,
+      duration: 3000,
+    })
+
     // Reset form
     setSelectedSize('')
     setSelectedPatches([])
     setPlayerName('')
     setPlayerNumber(undefined)
     setError('')
-
-    // TODO: Show toast notification
-    alert('Prodotto aggiunto al carrello!')
   }
 
   return (

@@ -3,6 +3,7 @@ import '../styles/globals.css'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { CartProvider } from '@/domains/cart/cart-context'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata: Metadata = {
   title: '1908 Shop',
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          <Toaster />
         </CartProvider>
       </body>
     </html>
