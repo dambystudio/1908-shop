@@ -15,7 +15,7 @@ export function Header() {
           <Link href="/" className="flex items-center gap-2 group">
             <div className="relative w-12 h-12 transition-transform group-hover:scale-110">
               <Image
-                src="/logo.png"
+                src="/logo.webp"
                 alt="1908 Shop Logo"
                 fill
                 className="object-contain"

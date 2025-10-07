@@ -65,7 +65,7 @@ export function MobileNav() {
           <p className="text-sm text-gray-500 mb-4">Seguici su:</p>
           <div className="flex gap-3">
             <a
-              href="https://instagram.com/1908.shop"
+              href="https://instagram.com/1908shop_"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 bg-gray-900 hover:bg-primary-red rounded-full flex items-center justify-center transition-colors"

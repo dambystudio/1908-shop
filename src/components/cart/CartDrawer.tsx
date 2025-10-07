@@ -14,9 +14,12 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { trackRemoveFromCart, trackBeginCheckout, trackInstagramDMClick } from '@/lib/analytics'
+import { useToast } from '@/hooks/use-toast'
+import { getInstagramUsername, getInstagramProfileUrl } from '@/lib/instagram'
 
 export function CartDrawer({ children }: { children: React.ReactNode }) {
   const { items, removeItem, clearCart, itemCount, totalPrice } = useCart()
+  const { toast } = useToast()
   const [hydrated, setHydrated] = useState(false)
 
   // Wait for hydration to avoid SSR mismatch
@@ -75,9 +78,18 @@ export function CartDrawer({ children }: { children: React.ReactNode }) {
     })
 
     const message = generateDMMessage()
-    const instagramUsername = '1908shop_' // TODO: make this configurable
-    const dmLink = `https://ig.me/m/${instagramUsername}?text=${message}`
-    window.open(dmLink, '_blank')
+
+    // Open Instagram DM with pre-filled message
+    // ig.me URL works on mobile (opens app) and desktop (opens web)
+    const instagramDMUrl = `https://ig.me/m/${getInstagramUsername()}?text=${message}`
+    window.open(instagramDMUrl, '_blank')
+
+    // Show confirmation toast
+    toast({
+      title: '📱 Apertura Instagram...',
+      description: "Premi Invia per completare l'ordine",
+      duration: 4000,
+    })
   }
 
   const handleRemoveItem = (item: (typeof items)[0]) => {
@@ -90,12 +102,6 @@ export function CartDrawer({ children }: { children: React.ReactNode }) {
     })
 
     removeItem(item.id)
-  }
-
-  const copyToClipboard = () => {
-    const message = decodeURIComponent(generateDMMessage())
-    navigator.clipboard.writeText(message)
-    alert('Riepilogo copiato negli appunti!')
   }
 
   if (!hydrated) {
@@ -236,10 +242,6 @@ export function CartDrawer({ children }: { children: React.ReactNode }) {
                     />
                   </svg>
                   Invia ordine su Instagram
-                </Button>
-
-                <Button variant="outline" className="w-full" onClick={copyToClipboard}>
-                  Copia riepilogo
                 </Button>
 
                 <Button

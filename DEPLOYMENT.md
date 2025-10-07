@@ -1,4 +1,4 @@
-# Deployment Guide - 1908 Shop
+x# Deployment Guide - 1908 Shop
 
 ## Vercel Deployment (Recommended)
 
