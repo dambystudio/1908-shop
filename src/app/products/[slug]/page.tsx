@@ -1,9 +1,16 @@
 import { getProductBySlug, getAllProducts } from '@/lib/data'
+import { generateSEOMetadata } from '@/lib/seo'
+import {
+  generateProductSchema,
+  generateBreadcrumbSchema,
+  JSONLDScript,
+} from '@/lib/structured-data'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
 import { ProductConfigurator } from '@/components/product/ProductConfigurator'
 import { ProductViewTracker } from '@/components/product/ProductViewTracker'
+import type { Metadata } from 'next'
 
 export const revalidate = 3600 // ISR: revalidate every hour
 
@@ -15,7 +22,11 @@ export async function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string }
+}): Promise<Metadata> {
   const product = await getProductBySlug(params.slug)
 
   if (!product) {
@@ -24,10 +35,19 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     }
   }
 
-  return {
-    title: `${product.name} | 1908 Shop`,
-    description: product.description,
-  }
+  // Calculate base availability
+  const hasStock = product.sizes.some((s) => s.stock > 0)
+
+  return generateSEOMetadata({
+    title: `${product.name} - ${product.club || 'Maglia da Calcio'}`,
+    description: `${product.description} | Personalizzazioni disponibili. ${product.season ? `Stagione ${product.season}` : ''}. Ordina su Instagram.`,
+    path: `/products/${product.slug}`,
+    image: product.images.main,
+    type: 'product',
+    price: product.basePrice,
+    currency: 'EUR',
+    availability: hasStock ? 'in stock' : 'out of stock',
+  })
 }
 
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
@@ -37,8 +57,24 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
     notFound()
   }
 
+  // Generate structured data
+  const hasStock = product.sizes.some((s) => s.stock > 0)
+  const productSchema = generateProductSchema(
+    product,
+    product.basePrice,
+    hasStock ? 'InStock' : 'OutOfStock'
+  )
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Prodotti', url: '/products' },
+    { name: product.name },
+  ])
+
   return (
     <div className="container mx-auto px-4 py-8">
+      <JSONLDScript data={productSchema} />
+      <JSONLDScript data={breadcrumbSchema} />
       <ProductViewTracker product={product} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
         {/* Image Gallery */}

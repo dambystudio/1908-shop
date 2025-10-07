@@ -4,15 +4,30 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { CartProvider } from '@/domains/cart/cart-context'
 import { Toaster } from '@/components/ui/toaster'
+import { generateSEOMetadata } from '@/lib/seo'
+import {
+  generateOrganizationSchema,
+  generateWebSiteSchema,
+  JSONLDScript,
+} from '@/lib/structured-data'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = generateSEOMetadata({
   title: '1908 Shop',
-  description: 'Abbigliamento da calcio - Maglie, personalizzazioni e molto altro',
-}
+  description:
+    'Maglie da calcio personalizzate - Inter, Milan, Serie A e collezioni vintage. Personalizzazioni con nome e numero, patch ufficiali.',
+  type: 'website',
+})
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const organizationSchema = generateOrganizationSchema()
+  const websiteSchema = generateWebSiteSchema()
+
   return (
     <html lang="it" className="dark">
+      <head>
+        <JSONLDScript data={organizationSchema} />
+        <JSONLDScript data={websiteSchema} />
+      </head>
       <body className="flex flex-col min-h-screen">
         <CartProvider>
           <Header />

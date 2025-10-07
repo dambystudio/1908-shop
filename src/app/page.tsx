@@ -1,10 +1,20 @@
 import { getFeaturedProducts, getAllProducts } from '@/lib/data'
+import { generateSEOMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import type { Metadata } from 'next'
 
 export const revalidate = 3600 // ISR: revalidate every hour
+
+export const metadata: Metadata = generateSEOMetadata({
+  title: '1908 Shop - Maglie da Calcio Personalizzate',
+  description:
+    'Shop online di maglie da calcio personalizzate. Inter, Milan, Serie A e collezioni vintage. Personalizza con nome e numero, aggiungi patch ufficiali. Ordina direttamente su Instagram.',
+  path: '/',
+  type: 'website',
+})
 
 export default async function HomePage() {
   const featuredProducts = await getFeaturedProducts()

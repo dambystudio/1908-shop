@@ -2,12 +2,16 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { getAllProducts } from '@/lib/data'
+import { generateSEOMetadata } from '@/lib/seo'
+import type { Metadata } from 'next'
 
-export const metadata = {
-  title: 'Mystery Box | 1908 Shop',
+export const metadata: Metadata = generateSEOMetadata({
+  title: 'Mystery Box - Sorpresa Esclusiva',
   description:
-    'Una sorpresa speciale per i veri appassionati di calcio. Scopri la nostra Mystery Box esclusiva.',
-}
+    'Mystery Box esclusiva 1908 Shop: una sorpresa speciale per i veri appassionati di calcio. Maglie vintage e moderne da collezione. Ordina la tua Mystery Box su Instagram.',
+  path: '/mystery-box',
+  type: 'product',
+})
 
 export default async function MysteryBoxPage() {
   const mysteryProducts = (await getAllProducts()).filter((p) => p.category === 'mystery-box')

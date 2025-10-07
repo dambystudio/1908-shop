@@ -1,7 +1,17 @@
 import { getAllProducts } from '@/lib/data'
 import { ProductListClient } from '@/components/product/ProductListClient'
+import { generateSEOMetadata } from '@/lib/seo'
+import type { Metadata } from 'next'
 
 export const revalidate = 3600 // ISR: revalidate every hour
+
+export const metadata: Metadata = generateSEOMetadata({
+  title: 'Prodotti - Maglie da Calcio',
+  description:
+    'Sfoglia la nostra collezione completa di maglie da calcio. Inter, Milan, Serie A, collezioni vintage e mystery box. Personalizzazioni disponibili.',
+  path: '/products',
+  type: 'website',
+})
 
 export default async function ProductsPage() {
   const products = await getAllProducts()
