@@ -75,7 +75,7 @@ export function CartDrawer({ children }: { children: React.ReactNode }) {
     })
 
     const message = generateDMMessage()
-    const instagramUsername = '1908.shop' // TODO: make this configurable
+    const instagramUsername = '1908shop_' // TODO: make this configurable
     const dmLink = `https://ig.me/m/${instagramUsername}?text=${message}`
     window.open(dmLink, '_blank')
   }
