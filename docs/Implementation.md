@@ -111,7 +111,8 @@ Sub-steps:
 - [x] Add Zod + React Hook Form utilities folder
 - [x] Add testing framework (Vitest + RTL + jest-axe) with example test
 - [x] CI pipeline (lint, typecheck, test)
-- [x] Vercel project & environment config (preview + production) - TODO: Deploy to Vercel
+- [x] Vercel project & environment config (preview + production)
+- [x] GitHub repository connected and deployed to https://1908-shop.vercel.app/
 
 ### Stage 2: Core Features (MVP Functional)
 

@@ -1,0 +1,7 @@
+{
+  "name": "Competizione",
+  "slug": "competition",
+  "description": "Maglie ufficiali delle squadre attualmente in competizione",
+  "image": "/uploads/category-competition.jpg",
+  "order": 1
+}
