@@ -10,7 +10,8 @@ export default function TinaWrapper() {
 
   const cms = useMemo(() => {
     return new TinaCMS({
-      ...(config as any),
+      enabled: true,
+      sidebar: true,
       apis: {
         tina: tinaClient,
       },
