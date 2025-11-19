@@ -4,6 +4,25 @@
 
 /* Reset body to white for Admin to ensure TinaCMS looks correct */
 body {
-  background-color: white;
-  color: black;
+  background-color: white !important;
+  color: black !important;
+  overflow: auto !important;
+}
+
+/* Ensure TinaCMS root container takes full height and is interactive */
+#tina-admin-app {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  z-index: 1;
+}
+
+/* Fix potential z-index issues with sidebar */
+[class*='Sidebar'] {
+  z-index: 9999 !important;
+}
+
+/* Ensure no global styles interfere with pointer events */
+* {
+  pointer-events: auto;
 }
