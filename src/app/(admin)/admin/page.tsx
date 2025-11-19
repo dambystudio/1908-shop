@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import config from '../../../tina/config'
-import tinaClient from '../../../tina/__generated__/client'
+import config from '../../../../tina/config'
+import tinaClient from '../../../../tina/__generated__/client'
 
 type TinaAdminComponent = (props: { config: typeof config }) => JSX.Element
 type TinaCMSProviderComponent = (props: any) => JSX.Element
