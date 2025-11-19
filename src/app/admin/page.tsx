@@ -93,7 +93,7 @@ export default function AdminPage() {
     )
   }
 
-  const tinaGraphqlVersion = process.env.NEXT_PUBLIC_TINA_GRAPHQL_VERSION || '1'
+  const tinaGraphqlVersion = process.env.NEXT_PUBLIC_TINA_GRAPHQL_VERSION || '1.4'
 
   if (!components) {
     return (
