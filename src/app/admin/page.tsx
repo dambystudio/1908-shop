@@ -1,17 +1,10 @@
 'use client'
 
-import { TinaCMS, TinaAdmin } from 'tinacms'
-import { useMemo } from 'react'
+import dynamic from 'next/dynamic'
+import config from '../../../tina/config'
+
+const TinaAdmin = dynamic(() => import('tinacms').then((mod) => mod.TinaAdmin), { ssr: false })
 
 export default function AdminPage() {
-  const cms = useMemo(() => {
-    return new TinaCMS({
-      clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
-      token: process.env.NEXT_PUBLIC_TINA_TOKEN,
-      branch: process.env.NEXT_PUBLIC_TINA_BRANCH || 'main',
-      isLocalClient: false,
-    })
-  }, [])
-
-  return <TinaAdmin cms={cms} />
+  return <TinaAdmin config={config} />
 }
