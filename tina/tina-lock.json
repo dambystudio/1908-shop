@@ -52,6 +52,7 @@
               "kids-set",
               "kids-jersey",
               "kids-shorts",
+              "shorts-single",
               "shorts-combo",
               "tracksuit"
             ],
@@ -65,7 +66,7 @@
             "name": "basePrice",
             "label": "Base Price (EUR)",
             "required": true,
-            "description": "Standard: €24.99, Longsleeve: €27.99, Player Adidas: €27.99, Player Other: €28.99, Retro: €27.99, Retro LS: €29.99, Kids Set: €31.99, Kids Jersey: €21.99, Kids Shorts: €17.99, Shorts Combo: €14.99, Tracksuit: €47.99-€77.99",
+            "description": "Standard: €24.99, Longsleeve: €27.99, Player Adidas: €27.99, Player Other: €28.99, Retro: €27.99, Retro LS: €29.99, Kids Set: €31.99, Kids Jersey: €21.99, Kids Shorts: €14.99, Shorts Single: €17.99, Shorts Combo: €14.99, Tracksuit: €47.99-€77.99",
             "namespace": ["product", "basePrice"],
             "searchable": true,
             "uid": false

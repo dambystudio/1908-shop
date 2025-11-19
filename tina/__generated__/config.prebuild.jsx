@@ -1,5 +1,8 @@
 // tina/config.ts
 import { defineConfig } from 'tinacms'
+var branch = process.env.TINA_BRANCH || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main'
+var clientId = process.env.TINA_CLIENT_ID || process.env.NEXT_PUBLIC_TINA_CLIENT_ID || ''
+var token = process.env.TINA_TOKEN || process.env.NEXT_PUBLIC_TINA_TOKEN || ''
 var schema = {
   collections: [
     {
@@ -44,6 +47,7 @@ var schema = {
             'kids-set',
             'kids-jersey',
             'kids-shorts',
+            'shorts-single',
             'shorts-combo',
             'tracksuit',
           ],
@@ -55,7 +59,7 @@ var schema = {
           label: 'Base Price (EUR)',
           required: true,
           description:
-            'Standard: \u20AC24.99, Longsleeve: \u20AC27.99, Player Adidas: \u20AC27.99, Player Other: \u20AC28.99, Retro: \u20AC27.99, Retro LS: \u20AC29.99, Kids Set: \u20AC31.99, Kids Jersey: \u20AC21.99, Kids Shorts: \u20AC17.99, Shorts Combo: \u20AC14.99, Tracksuit: \u20AC47.99-\u20AC77.99',
+            'Standard: \u20AC24.99, Longsleeve: \u20AC27.99, Player Adidas: \u20AC27.99, Player Other: \u20AC28.99, Retro: \u20AC27.99, Retro LS: \u20AC29.99, Kids Set: \u20AC31.99, Kids Jersey: \u20AC21.99, Kids Shorts: \u20AC14.99, Shorts Single: \u20AC17.99, Shorts Combo: \u20AC14.99, Tracksuit: \u20AC47.99-\u20AC77.99',
         },
         {
           type: 'string',
@@ -302,9 +306,9 @@ var schema = {
   ],
 }
 var config_default = defineConfig({
-  branch: process.env.TINA_BRANCH || 'main',
-  clientId: process.env.TINA_CLIENT_ID || '',
-  token: process.env.TINA_TOKEN || '',
+  branch,
+  clientId,
+  token,
   build: {
     outputFolder: 'admin',
     publicFolder: 'public',

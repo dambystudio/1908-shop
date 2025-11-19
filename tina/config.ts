@@ -1,5 +1,9 @@
 import { defineConfig } from 'tinacms'
 
+const branch = process.env.TINA_BRANCH || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main'
+const clientId = process.env.TINA_CLIENT_ID || process.env.NEXT_PUBLIC_TINA_CLIENT_ID || ''
+const token = process.env.TINA_TOKEN || process.env.NEXT_PUBLIC_TINA_TOKEN || ''
+
 // Complete schema for Stage 2 - Product & Category collections
 const schema = {
   collections: [
@@ -45,6 +49,7 @@ const schema = {
             'kids-set',
             'kids-jersey',
             'kids-shorts',
+            'shorts-single',
             'shorts-combo',
             'tracksuit',
           ],
@@ -56,7 +61,7 @@ const schema = {
           label: 'Base Price (EUR)',
           required: true,
           description:
-            'Standard: €24.99, Longsleeve: €27.99, Player Adidas: €27.99, Player Other: €28.99, Retro: €27.99, Retro LS: €29.99, Kids Set: €31.99, Kids Jersey: €21.99, Kids Shorts: €17.99, Shorts Combo: €14.99, Tracksuit: €47.99-€77.99',
+            'Standard: €24.99, Longsleeve: €27.99, Player Adidas: €27.99, Player Other: €28.99, Retro: €27.99, Retro LS: €29.99, Kids Set: €31.99, Kids Jersey: €21.99, Kids Shorts: €14.99, Shorts Single: €17.99, Shorts Combo: €14.99, Tracksuit: €47.99-€77.99',
         },
         {
           type: 'string',
@@ -304,9 +309,9 @@ const schema = {
 }
 
 export default defineConfig({
-  branch: process.env.TINA_BRANCH || 'main',
-  clientId: process.env.TINA_CLIENT_ID || '',
-  token: process.env.TINA_TOKEN || '',
+  branch,
+  clientId,
+  token,
   build: {
     outputFolder: 'admin',
     publicFolder: 'public',
