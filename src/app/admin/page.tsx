@@ -1,15 +1,17 @@
-export default function AdminPage() {
-  // Redirect to the Tina Cloud admin
-  if (typeof window !== 'undefined') {
-    window.location.href = '/admin/index.html'
-  }
+'use client'
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-black text-white">
-      <div className="text-center">
-        <h1 className="text-2xl font-bebas mb-4">Loading Tina CMS...</h1>
-        <p className="text-gray-400">Redirecting to admin panel...</p>
-      </div>
-    </div>
-  )
+import { TinaCMS, TinaAdmin } from 'tinacms'
+import { useMemo } from 'react'
+
+export default function AdminPage() {
+  const cms = useMemo(() => {
+    return new TinaCMS({
+      clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
+      token: process.env.NEXT_PUBLIC_TINA_TOKEN,
+      branch: process.env.NEXT_PUBLIC_TINA_BRANCH || 'main',
+      isLocalClient: false,
+    })
+  }, [])
+
+  return <TinaAdmin cms={cms} />
 }
