@@ -33,9 +33,8 @@ export function ProductImage({
 
   // Generate placeholder based on product name
   const generatePlaceholder = () => {
-    // Extract product name from alt text
-    const productName = alt.replace(/\s+/g, '+')
-    return `https://placehold.co/${width || 1200}x${height || 1200}/000000/D40000?text=${productName}&font=roboto`
+    // Use a simple data URI for the placeholder instead of placehold.co
+    return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${width || 1200}' height='${height || 1200}'%3E%3Crect width='100%25' height='100%25' fill='%23000000'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='48' fill='%23D40000'%3E${encodeURIComponent(alt)}%3C/text%3E%3C/svg%3E`
   }
 
   const imageProps = {

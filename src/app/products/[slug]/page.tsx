@@ -1,4 +1,4 @@
-import { getProductBySlug, getAllProducts } from '@/lib/data'
+import { getProductBySlug, getAllProducts, getReviewsByProduct, getAverageRating } from '@/lib/data'
 import { generateSEOMetadata } from '@/lib/seo'
 import {
   generateProductSchema,
@@ -6,10 +6,12 @@ import {
   JSONLDScript,
 } from '@/lib/structured-data'
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
+import { ProductImage } from '@/components/ui/ProductImage'
 import { Badge } from '@/components/ui/badge'
 import { ProductConfigurator } from '@/components/product/ProductConfigurator'
 import { ProductViewTracker } from '@/components/product/ProductViewTracker'
+import { ReviewsList } from '@/components/product/ReviewsList'
+import { StarRating } from '@/components/ui/StarRating'
 import type { Metadata } from 'next'
 
 export const revalidate = 3600 // ISR: revalidate every hour
@@ -57,6 +59,10 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
     notFound()
   }
 
+  // Load reviews
+  const reviews = await getReviewsByProduct(params.slug)
+  const averageRating = await getAverageRating(params.slug)
+
   // Generate structured data
   const hasStock = product.sizes.some((s) => s.stock > 0)
   const productSchema = generateProductSchema(
@@ -80,8 +86,8 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
         {/* Image Gallery */}
         <div className="space-y-4">
           <div className="aspect-square relative bg-gray-900 rounded-lg overflow-hidden">
-            <Image
-              src={product.images.main || '/placeholder.jpg'}
+            <ProductImage
+              src={product.images.main}
               alt={product.name}
               fill
               className="object-cover"
@@ -98,7 +104,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
                   key={idx}
                   className="aspect-square relative bg-gray-900 rounded overflow-hidden border border-gray-800 hover:border-primary-red transition-colors cursor-pointer"
                 >
-                  <Image
+                  <ProductImage
                     src={img}
                     alt={`${product.name} - ${idx + 1}`}
                     fill
@@ -119,10 +125,19 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
             </div>
             <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
             {product.club && product.season && (
-              <p className="text-gray-400">
+              <p className="text-gray-400 mb-4">
                 {product.club} • {product.season}
               </p>
             )}
+
+            {/* Review Summary */}
+            <div className="flex items-center gap-2 mb-6">
+              <StarRating rating={averageRating} size="sm" />
+              <span className="text-sm text-gray-400">
+                {averageRating.toFixed(1)} ({reviews.length}{' '}
+                {reviews.length === 1 ? 'recensione' : 'recensioni'})
+              </span>
+            </div>
           </div>
 
           <p className="text-gray-300 leading-relaxed">{product.description}</p>
@@ -130,6 +145,12 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
           {/* Interactive Product Configuration */}
           <ProductConfigurator product={product} />
         </div>
+      </div>
+
+      {/* Reviews Section */}
+      <div className="mt-16">
+        <h2 className="text-3xl font-bold mb-8">Recensioni Clienti</h2>
+        <ReviewsList reviews={reviews} averageRating={averageRating} />
       </div>
     </div>
   )

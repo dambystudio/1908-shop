@@ -1,0 +1,35 @@
+{
+  "name": "Maglia Napoli 2024/25 Home Manica Lunga",
+  "slug": "napoli-2024-25-home-longsleeve",
+  "description": "Maglia azzurra del Napoli stagione 2024/25 con maniche lunghe. Perfetta per le giornate più fresche, mantiene lo stesso design iconico della versione standard.",
+  "productType": "longsleeve",
+  "basePrice": 27.99,
+  "category": "competition",
+  "competition": "serie-a",
+  "club": "Napoli",
+  "season": "2024-25",
+  "images": {
+    "main": "/milan.avif",
+    "gallery": []
+  },
+  "sizes": [
+    { "size": "S", "stock": 5 },
+    { "size": "M", "stock": 8 },
+    { "size": "L", "stock": 7 },
+    { "size": "XL", "stock": 4 },
+    { "size": "XXL", "stock": 2 }
+  ],
+  "allowCustomization": true,
+  "customizationPrice": 4,
+  "patches": [
+    {
+      "id": "serie-a-24-25",
+      "name": "Patch Serie A 2024/25",
+      "price": 2,
+      "image": "/milan.avif"
+    }
+  ],
+  "featured": false,
+  "published": true,
+  "createdAt": "2025-10-28T15:00:00.000Z"
+}

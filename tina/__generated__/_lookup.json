@@ -1,0 +1,50 @@
+{
+  "DocumentConnection": {
+    "type": "DocumentConnection",
+    "resolveType": "multiCollectionDocumentList",
+    "collections": ["product", "category", "review"]
+  },
+  "Node": { "type": "Node", "resolveType": "nodeDocument" },
+  "DocumentNode": {
+    "type": "DocumentNode",
+    "resolveType": "multiCollectionDocument",
+    "createDocument": "create",
+    "updateDocument": "update"
+  },
+  "Product": {
+    "type": "Product",
+    "resolveType": "collectionDocument",
+    "collection": "product",
+    "createProduct": "create",
+    "updateProduct": "update"
+  },
+  "ProductConnection": {
+    "type": "ProductConnection",
+    "resolveType": "collectionDocumentList",
+    "collection": "product"
+  },
+  "Category": {
+    "type": "Category",
+    "resolveType": "collectionDocument",
+    "collection": "category",
+    "createCategory": "create",
+    "updateCategory": "update"
+  },
+  "CategoryConnection": {
+    "type": "CategoryConnection",
+    "resolveType": "collectionDocumentList",
+    "collection": "category"
+  },
+  "Review": {
+    "type": "Review",
+    "resolveType": "collectionDocument",
+    "collection": "review",
+    "createReview": "create",
+    "updateReview": "update"
+  },
+  "ReviewConnection": {
+    "type": "ReviewConnection",
+    "resolveType": "collectionDocumentList",
+    "collection": "review"
+  }
+}

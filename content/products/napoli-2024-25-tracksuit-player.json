@@ -1,0 +1,28 @@
+{
+  "name": "Tuta Napoli 2024/25 Player Version",
+  "slug": "napoli-2024-25-tracksuit-player",
+  "description": "Tuta completa Napoli Player Version stagione 2024/25. Include giacca con zip e pantalone. Tessuto tecnico premium, tasche con zip, fit slim. Disponibile in diverse varianti di prezzo.",
+  "productType": "tracksuit",
+  "basePrice": 47.99,
+  "category": "tracksuit",
+  "competition": "serie-a",
+  "club": "Napoli",
+  "season": "2024-25",
+  "images": {
+    "main": "/milan.avif",
+    "gallery": []
+  },
+  "sizes": [
+    { "size": "S", "stock": 4 },
+    { "size": "M", "stock": 6 },
+    { "size": "L", "stock": 5 },
+    { "size": "XL", "stock": 3 },
+    { "size": "XXL", "stock": 2 }
+  ],
+  "allowCustomization": false,
+  "customizationPrice": 0,
+  "patches": [],
+  "featured": false,
+  "published": true,
+  "createdAt": "2025-10-28T18:00:00.000Z"
+}

@@ -2,11 +2,11 @@ import { getFeaturedProducts, getAllProducts } from '@/lib/data'
 import { generateSEOMetadata } from '@/lib/seo'
 import { Hero } from '@/components/home/Hero'
 import { CategoryCarousel } from '@/components/home/CategoryCarousel'
+import { ProductCard } from '@/components/product/ProductCard'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import type { Metadata } from 'next'
+import { ArrowRight, Sparkles, History, Box } from 'lucide-react'
 
 export const revalidate = 3600 // ISR: revalidate every hour
 
@@ -32,28 +32,28 @@ export default async function HomePage() {
       id: 'inter',
       title: 'INTER',
       description: 'Collezione completa 2023/24',
-      image: 'https://placehold.co/600x750/1a1a1a/0066CC?text=INTER&font=raleway',
+      image: '/inter.jpg',
       href: '/products?club=Inter',
     },
     {
       id: 'milan',
       title: 'MILAN',
       description: 'Vintage e moderne',
-      image: 'https://placehold.co/600x750/1a1a1a/AC1F32?text=MILAN&font=raleway',
+      image: '/milan.avif',
       href: '/products?club=Milan',
     },
     {
       id: 'juventus',
       title: 'JUVENTUS',
       description: 'Stagione 2023/24',
-      image: 'https://placehold.co/600x750/000000/FFFFFF?text=JUVENTUS&font=raleway',
+      image: '/juve2.jpg',
       href: '/products?club=Juventus',
     },
     {
       id: 'napoli',
       title: 'NAPOLI',
       description: "Campioni d'Italia",
-      image: 'https://placehold.co/600x750/1a1a1a/0080FF?text=NAPOLI&font=raleway',
+      image: '/napoli.jpeg',
       href: '/products?club=Napoli',
     },
   ]
@@ -95,99 +95,60 @@ export default async function HomePage() {
       <Hero
         title="TUTTI GLI ARTICOLI"
         subtitle="Esplora la nostra collezione completa"
-        image="https://placehold.co/2560x1440/0E0E10/FFFFFF?text=HERO+IMAGE+%7C+Fornita+dall%27utente&font=raleway"
+        image="/sansirohd.png"
         href="/products"
       />
 
-      {/* Category Carousels */}
-      <div className="space-y-4 py-12">
-        <CategoryCarousel title="Serie A" cards={clubsRow1} />
-        <CategoryCarousel title="Internazionali" cards={clubsRow2} />
-      </div>
+      {/* Category Grid - Full Width, No Spacing */}
+      <CategoryCarousel
+        categories={[...clubsRow1, ...clubsRow2].map((card) => ({
+          name: card.title,
+          image: card.image,
+          link: card.href,
+        }))}
+      />
 
       {/* Featured Products Section */}
       {featuredProducts.length > 0 && (
-        <section className="py-16 bg-black">
+        <section className="py-24 bg-black relative overflow-hidden">
+          {/* Decorative background element */}
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#333] to-transparent" />
+
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-end justify-between mb-12">
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-2">Prodotti in Evidenza</h2>
-                <p className="text-gray-400">Le nostre maglie più popolari</p>
+                <h2 className="text-5xl md:text-6xl font-bebas text-white mb-2 tracking-wide">
+                  Prodotti in{' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D40000] to-[#ff4d4d]">
+                    Evidenza
+                  </span>
+                </h2>
+                <p className="text-gray-400 text-lg">Le maglie più richieste del momento</p>
               </div>
-              <Button asChild variant="ghost" className="hidden md:flex">
-                <Link href="/products">
+              <Button
+                asChild
+                variant="ghost"
+                className="hidden md:flex text-white hover:text-[#D40000] hover:bg-transparent group"
+              >
+                <Link href="/products" className="flex items-center gap-2">
                   Vedi Tutti
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-4 h-4 ml-2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                    />
-                  </svg>
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredProducts.slice(0, 3).map((product) => (
-                <Link
-                  key={product.slug}
-                  href={`/products/${product.slug}`}
-                  className="group block border border-gray-800 rounded-lg overflow-hidden hover:border-primary-red transition-all hover:shadow-lg hover:shadow-primary-red/20"
-                >
-                  <div className="aspect-square relative bg-gray-900">
-                    <Image
-                      src={product.images.main || '/placeholder.jpg'}
-                      alt={product.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <Badge className="absolute top-3 right-3 bg-primary-red">In Evidenza</Badge>
-                  </div>
-                  <div className="p-5 bg-gray-950">
-                    <h3 className="font-semibold text-xl mb-2 group-hover:text-primary-red transition-colors">
-                      {product.name}
-                    </h3>
-                    <p className="text-sm text-gray-400 mb-3 line-clamp-2">{product.description}</p>
-
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {product.competition && (
-                        <Badge variant="outline" className="text-xs">
-                          {product.competition}
-                        </Badge>
-                      )}
-                      {product.allowCustomization && (
-                        <Badge
-                          variant="outline"
-                          className="text-xs border-primary-red text-primary-red"
-                        >
-                          Personalizzabile
-                        </Badge>
-                      )}
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-2xl font-bold text-primary-red">
-                        €{product.basePrice.toFixed(2)}
-                      </span>
-                      <span className="text-sm text-gray-500">
-                        {product.sizes.reduce((sum, s) => sum + s.stock, 0)} disponibili
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                <ProductCard key={product.slug} product={product} />
               ))}
             </div>
 
-            <div className="mt-8 text-center md:hidden">
-              <Button asChild variant="outline">
+            <div className="mt-12 text-center md:hidden">
+              <Button
+                asChild
+                variant="outline"
+                className="border-white/20 text-white hover:bg-white hover:text-black"
+              >
                 <Link href="/products">Vedi Tutti i Prodotti</Link>
               </Button>
             </div>
@@ -196,41 +157,42 @@ export default async function HomePage() {
       )}
 
       {/* Categories Section */}
-      <section className="py-16 bg-gray-950">
+      <section className="py-24 bg-[#0E0E10] relative">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-2">Esplora per Categoria</h2>
-            <p className="text-gray-400">Trova la maglia perfetta per te</p>
+          <div className="text-center mb-16">
+            <h2 className="text-5xl md:text-6xl font-bebas text-white mb-4 tracking-wide">
+              Esplora per Categoria
+            </h2>
+            <div className="w-24 h-1 bg-[#D40000] mx-auto" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Competition Category */}
             <Link
               href="/products?competition=Serie+A"
-              className="group relative overflow-hidden rounded-lg border border-gray-800 hover:border-primary-red transition-all h-64 bg-gradient-to-br from-gray-900 to-black"
+              className="group relative overflow-hidden rounded-2xl h-80 bg-[#111] border border-white/5 hover:border-[#D40000]/50 transition-all duration-500"
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10"></div>
-              <div className="relative z-20 h-full flex flex-col justify-end p-6">
-                <h3 className="text-2xl font-bold mb-2 group-hover:text-primary-red transition-colors">
-                  Maglie da Competizione
-                </h3>
-                <p className="text-gray-400 mb-3">Serie A, Champions League e altro</p>
-                <div className="flex items-center text-primary-red">
-                  <span className="text-sm font-semibold">{competitionCount} prodotti</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                    />
-                  </svg>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-black z-0" />
+              <div className="absolute top-0 right-0 p-32 bg-[#D40000]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-[#D40000]/10 transition-colors duration-500" />
+
+              <div className="relative z-10 h-full flex flex-col justify-between p-8">
+                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform duration-500">
+                  <Sparkles className="w-6 h-6 text-white" />
+                </div>
+
+                <div>
+                  <h3 className="text-3xl font-bebas text-white mb-2 group-hover:text-[#D40000] transition-colors tracking-wide">
+                    Competizioni
+                  </h3>
+                  <p className="text-gray-400 mb-4 font-light">
+                    Serie A, Champions League e campionati esteri
+                  </p>
+                  <div className="flex items-center text-white/80 group-hover:text-white transition-colors">
+                    <span className="text-sm font-semibold uppercase tracking-wider">
+                      {competitionCount} prodotti
+                    </span>
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" />
+                  </div>
                 </div>
               </div>
             </Link>
@@ -238,30 +200,29 @@ export default async function HomePage() {
             {/* Retro Category */}
             <Link
               href="/products?category=retro"
-              className="group relative overflow-hidden rounded-lg border border-gray-800 hover:border-primary-red transition-all h-64 bg-gradient-to-br from-gray-900 to-black"
+              className="group relative overflow-hidden rounded-2xl h-80 bg-[#111] border border-white/5 hover:border-[#D40000]/50 transition-all duration-500"
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10"></div>
-              <div className="relative z-20 h-full flex flex-col justify-end p-6">
-                <h3 className="text-2xl font-bold mb-2 group-hover:text-primary-red transition-colors">
-                  Maglie Vintage
-                </h3>
-                <p className="text-gray-400 mb-3">Classici intramontabili degli anni '90</p>
-                <div className="flex items-center text-primary-red">
-                  <span className="text-sm font-semibold">{retroCount} prodotti</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                    />
-                  </svg>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-black z-0" />
+              <div className="absolute top-0 right-0 p-32 bg-blue-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-blue-500/10 transition-colors duration-500" />
+
+              <div className="relative z-10 h-full flex flex-col justify-between p-8">
+                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform duration-500">
+                  <History className="w-6 h-6 text-white" />
+                </div>
+
+                <div>
+                  <h3 className="text-3xl font-bebas text-white mb-2 group-hover:text-[#D40000] transition-colors tracking-wide">
+                    Vintage & Retro
+                  </h3>
+                  <p className="text-gray-400 mb-4 font-light">
+                    Classici intramontabili che hanno fatto la storia
+                  </p>
+                  <div className="flex items-center text-white/80 group-hover:text-white transition-colors">
+                    <span className="text-sm font-semibold uppercase tracking-wider">
+                      {retroCount} prodotti
+                    </span>
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" />
+                  </div>
                 </div>
               </div>
             </Link>
@@ -269,31 +230,30 @@ export default async function HomePage() {
             {/* Mystery Box Category */}
             <Link
               href="/mystery-box"
-              className="group relative overflow-hidden rounded-lg border border-primary-red hover:border-primary-red-dark transition-all h-64 bg-gradient-to-br from-primary-red/20 to-black"
+              className="group relative overflow-hidden rounded-2xl h-80 bg-[#111] border border-[#D40000] hover:shadow-[0_0_30px_rgba(212,0,0,0.3)] transition-all duration-500"
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10"></div>
-              <div className="relative z-20 h-full flex flex-col justify-end p-6">
-                <Badge className="w-fit mb-3 bg-primary-red animate-pulse">Novità</Badge>
-                <h3 className="text-2xl font-bold mb-2 group-hover:text-primary-red transition-colors">
-                  Mystery Box
-                </h3>
-                <p className="text-gray-400 mb-3">Una sorpresa speciale ti aspetta</p>
-                <div className="flex items-center text-primary-red">
-                  <span className="text-sm font-semibold">Scopri di più</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                    />
-                  </svg>
+              <div className="absolute inset-0 bg-[url('/mystery-box.png')] bg-cover bg-center opacity-40 group-hover:opacity-50 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+
+              <div className="relative z-10 h-full flex flex-col justify-between p-8">
+                <div className="w-12 h-12 rounded-full bg-[#D40000] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-500 animate-pulse">
+                  <Box className="w-6 h-6 text-white" />
+                </div>
+
+                <div>
+                  <div className="inline-block px-3 py-1 bg-[#D40000] text-white text-xs font-bold uppercase tracking-widest rounded mb-3">
+                    Novità
+                  </div>
+                  <h3 className="text-3xl font-bebas text-white mb-2 group-hover:text-[#D40000] transition-colors tracking-wide">
+                    Mystery Box
+                  </h3>
+                  <p className="text-gray-200 mb-4 font-light">
+                    Non sai cosa scegliere? Lasciati sorprendere
+                  </p>
+                  <div className="flex items-center text-[#D40000] font-bold">
+                    <span className="text-sm uppercase tracking-wider">Scopri di più</span>
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" />
+                  </div>
                 </div>
               </div>
             </Link>
@@ -302,18 +262,18 @@ export default async function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-black">
+      <section className="py-24 bg-black border-t border-white/5">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-primary-red/10 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="text-center p-6 group">
+              <div className="w-20 h-20 bg-[#1a1a1a] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-[#D40000]/10 transition-colors duration-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-8 h-8 text-primary-red"
+                  className="w-10 h-10 text-white group-hover:text-[#D40000] transition-colors duration-300"
                 >
                   <path
                     strokeLinecap="round"
@@ -322,21 +282,24 @@ export default async function HomePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">Personalizzazione Completa</h3>
-              <p className="text-gray-400">
-                Aggiungi nome, numero e patch ufficiali per rendere unica la tua maglia
+              <h3 className="text-2xl font-bebas text-white mb-3 tracking-wide">
+                Personalizzazione Completa
+              </h3>
+              <p className="text-gray-400 leading-relaxed">
+                Aggiungi nome, numero e patch ufficiali per rendere unica la tua maglia. Dettagli
+                curati al millimetro.
               </p>
             </div>
 
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-primary-red/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="text-center p-6 group">
+              <div className="w-20 h-20 bg-[#1a1a1a] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-[#D40000]/10 transition-colors duration-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-8 h-8 text-primary-red"
+                  className="w-10 h-10 text-white group-hover:text-[#D40000] transition-colors duration-300"
                 >
                   <path
                     strokeLinecap="round"
@@ -345,21 +308,24 @@ export default async function HomePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">Ordine su Instagram</h3>
-              <p className="text-gray-400">
-                Semplice e veloce: completa l'ordine direttamente tramite DM
+              <h3 className="text-2xl font-bebas text-white mb-3 tracking-wide">
+                Ordine su Instagram
+              </h3>
+              <p className="text-gray-400 leading-relaxed">
+                Un'esperienza d'acquisto diretta e personale. Completa l'ordine velocemente tramite
+                DM.
               </p>
             </div>
 
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-primary-red/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="text-center p-6 group">
+              <div className="w-20 h-20 bg-[#1a1a1a] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-[#D40000]/10 transition-colors duration-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-8 h-8 text-primary-red"
+                  className="w-10 h-10 text-white group-hover:text-[#D40000] transition-colors duration-300"
                 >
                   <path
                     strokeLinecap="round"
@@ -368,9 +334,12 @@ export default async function HomePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">Qualità Garantita</h3>
-              <p className="text-gray-400">
-                Maglie ufficiali e repliche di alta qualità per veri appassionati
+              <h3 className="text-2xl font-bebas text-white mb-3 tracking-wide">
+                Qualità Garantita
+              </h3>
+              <p className="text-gray-400 leading-relaxed">
+                Selezioniamo solo i migliori materiali. Maglie ufficiali e repliche fedeli in ogni
+                dettaglio.
               </p>
             </div>
           </div>
@@ -378,33 +347,24 @@ export default async function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-950 to-black">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Pronto per ordinare?</h2>
-          <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-            Scegli la tua maglia, personalizzala e ricevila a casa tua
+      <section className="py-32 bg-gradient-to-b from-black to-[#111] relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/sansirohd.png')] bg-cover bg-center opacity-10 mix-blend-overlay" />
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h2 className="text-5xl md:text-7xl font-bebas text-white mb-6 tracking-wide">
+            Scendi in campo
+          </h2>
+          <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto font-light">
+            La tua passione merita il meglio. Scegli la tua maglia, personalizzala e ricevila a casa
+            tua.
           </p>
           <Button
             asChild
             size="lg"
-            className="bg-primary-red hover:bg-primary-red-dark text-lg px-8 py-6"
+            className="bg-[#D40000] hover:bg-[#b30000] text-white text-xl px-10 py-8 rounded-full shadow-[0_0_30px_rgba(212,0,0,0.4)] hover:shadow-[0_0_50px_rgba(212,0,0,0.6)] transition-all duration-300"
           >
-            <Link href="/products">
-              Inizia a Fare Shopping
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-5 h-5 ml-2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                />
-              </svg>
+            <Link href="/products" className="flex items-center gap-3">
+              INIZIA LO SHOPPING
+              <ArrowRight className="w-6 h-6" />
             </Link>
           </Button>
         </div>

@@ -143,11 +143,11 @@ Dependencies: Stage 2
 
 Sub-steps:
 
-- [ ] Reviews collection & moderation workflow (status field, only published rendered)
-- [ ] Review component & rating display
-- [ ] Mystery Box landing page (curated content + CTA)
-- [ ] Advanced search (client-side index by competition/season/club)
-- [ ] Enhanced image optimization (blur placeholders, aspect ratio component)
+- [x] Reviews collection & moderation workflow (status field, only published rendered)
+- [x] Review component & rating display
+- [x] Mystery Box landing page (curated content + CTA)
+- [x] Advanced search (client-side index by competition/season/club)
+- [x] Enhanced image optimization (blur placeholders, aspect ratio component)
 - [ ] Performance pass (LCP tuning, prefetch, bundle analysis)
 
 ### Stage 4: Polish & Optimization / R2 Prep

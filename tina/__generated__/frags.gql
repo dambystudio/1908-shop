@@ -1,0 +1,54 @@
+fragment ProductParts on Product {
+  __typename
+  name
+  slug
+  description
+  productType
+  basePrice
+  category
+  competition
+  club
+  season
+  images {
+    __typename
+    main
+    gallery
+  }
+  sizes {
+    __typename
+    size
+    stock
+  }
+  allowCustomization
+  customizationPrice
+  patches {
+    __typename
+    id
+    name
+    price
+    image
+  }
+  featured
+  published
+  createdAt
+}
+
+fragment CategoryParts on Category {
+  __typename
+  name
+  slug
+  description
+  image
+  order
+}
+
+fragment ReviewParts on Review {
+  __typename
+  author
+  rating
+  content
+  productSlug
+  status
+  createdAt
+  email
+}

@@ -5,6 +5,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
 import { ProductFilters, FilterOptions } from '@/components/product/ProductFilters'
+import { SearchBar } from '@/components/product/SearchBar'
+import { useProductSearch } from '@/hooks/use-product-search'
 import { trackSearch, trackProductListView } from '@/lib/analytics'
 import type { Product } from '@/types/product'
 
@@ -19,6 +21,17 @@ export function ProductListClient({ products }: ProductListClientProps) {
     season: null,
     search: '',
     showOnlyCustomizable: false,
+  })
+
+  // Use Fuse.js for advanced search
+  const {
+    searchQuery,
+    setSearchQuery,
+    results: searchResults,
+  } = useProductSearch({
+    products,
+    searchKeys: ['name', 'club', 'competition', 'season', 'description'],
+    threshold: 0.3,
   })
 
   // Extract unique filter options from products
@@ -40,9 +53,12 @@ export function ProductListClient({ products }: ProductListClientProps) {
     }
   }, [products])
 
-  // Filter products
+  // Filter products - use Fuse.js results if search is active, otherwise use all products
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
+    // Start with search results or all products
+    const baseProducts = searchQuery ? searchResults : products
+
+    return baseProducts.filter((product) => {
       // Competition filter
       if (filters.competition && product.competition !== filters.competition) {
         return false
@@ -58,18 +74,6 @@ export function ProductListClient({ products }: ProductListClientProps) {
         return false
       }
 
-      // Search filter
-      if (filters.search) {
-        const searchLower = filters.search.toLowerCase()
-        const matchesName = product.name.toLowerCase().includes(searchLower)
-        const matchesDescription = product.description?.toLowerCase().includes(searchLower)
-        const matchesClub = product.club?.toLowerCase().includes(searchLower)
-
-        if (!matchesName && !matchesDescription && !matchesClub) {
-          return false
-        }
-      }
-
       // Customizable filter
       if (filters.showOnlyCustomizable && !product.allowCustomization) {
         return false
@@ -77,21 +81,21 @@ export function ProductListClient({ products }: ProductListClientProps) {
 
       return true
     })
-  }, [products, filters])
+  }, [searchQuery, searchResults, products, filters])
 
   // Track search when search term changes
   useEffect(() => {
-    if (filters.search && filters.search.length >= 3) {
+    if (searchQuery && searchQuery.length >= 3) {
       const timeoutId = setTimeout(() => {
         trackSearch({
-          searchTerm: filters.search,
+          searchTerm: searchQuery,
           resultsCount: filteredProducts.length,
         })
       }, 1000) // Debounce 1 second
 
       return () => clearTimeout(timeoutId)
     }
-  }, [filters.search, filteredProducts.length])
+  }, [searchQuery, filteredProducts.length])
 
   // Track product list view on mount
   useEffect(() => {
@@ -103,6 +107,13 @@ export function ProductListClient({ products }: ProductListClientProps) {
 
   return (
     <div className="space-y-6">
+      {/* Search Bar */}
+      <SearchBar
+        onSearch={setSearchQuery}
+        placeholder="Cerca per nome, club, competizione..."
+        debounceMs={300}
+      />
+
       {/* Filters */}
       <ProductFilters
         filters={filters}

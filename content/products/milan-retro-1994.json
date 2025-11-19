@@ -2,24 +2,27 @@
   "name": "Maglia Milan Retro 1994",
   "slug": "milan-retro-1994",
   "description": "Maglia storica Milan stagione 1993/94, celebre per il Dream Team di Capello. Replica fedele con stemma e sponsor originali.",
-  "basePrice": 75,
+  "productType": "retro",
+  "basePrice": 27.99,
   "category": "retro",
   "competition": "serie-a",
   "club": "Milan",
   "season": "1993-94",
   "images": {
-    "main": "/uploads/milan-retro-main.jpg",
-    "gallery": ["/uploads/milan-retro-front.jpg", "/uploads/milan-retro-back.jpg"]
+    "main": "/milan.avif",
+    "gallery": []
   },
   "sizes": [
-    { "size": "M", "stock": 2 },
-    { "size": "L", "stock": 3 },
-    { "size": "XL", "stock": 1 }
+    { "size": "S", "stock": 8 },
+    { "size": "M", "stock": 10 },
+    { "size": "L", "stock": 8 },
+    { "size": "XL", "stock": 5 },
+    { "size": "XXL", "stock": 3 }
   ],
   "allowCustomization": true,
-  "customizationPrice": 12,
+  "customizationPrice": 4,
   "patches": [],
   "featured": true,
   "published": true,
-  "createdAt": "2025-01-10T12:00:00.000Z"
+  "createdAt": "2025-10-28T12:00:00.000Z"
 }

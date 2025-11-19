@@ -1,0 +1,405 @@
+{
+  "version": { "fullVersion": "1.6.1", "major": "1", "minor": "6", "patch": "1" },
+  "meta": { "flags": ["experimentalData"] },
+  "collections": [
+    {
+      "name": "product",
+      "label": "Products",
+      "path": "content/products",
+      "format": "json",
+      "fields": [
+        {
+          "type": "string",
+          "name": "name",
+          "label": "Product Name",
+          "required": true,
+          "namespace": ["product", "name"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "slug",
+          "label": "Slug",
+          "required": true,
+          "namespace": ["product", "slug"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "description",
+          "label": "Description",
+          "required": true,
+          "ui": { "component": "textarea" },
+          "namespace": ["product", "description"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "productType",
+          "label": "Product Type",
+          "required": true,
+          "options": [
+            "standard",
+            "longsleeve",
+            "player-version-adidas",
+            "player-version-other",
+            "retro",
+            "retro-longsleeve",
+            "kids-set",
+            "kids-jersey",
+            "kids-shorts",
+            "shorts-combo",
+            "tracksuit"
+          ],
+          "description": "Product type determines base pricing",
+          "namespace": ["product", "productType"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "number",
+          "name": "basePrice",
+          "label": "Base Price (EUR)",
+          "required": true,
+          "description": "Standard: €24.99, Longsleeve: €27.99, Player Adidas: €27.99, Player Other: €28.99, Retro: €27.99, Retro LS: €29.99, Kids Set: €31.99, Kids Jersey: €21.99, Kids Shorts: €17.99, Shorts Combo: €14.99, Tracksuit: €47.99-€77.99",
+          "namespace": ["product", "basePrice"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "category",
+          "label": "Category",
+          "required": true,
+          "options": ["retro", "competition", "mystery-box", "kids", "shorts", "tracksuit"],
+          "namespace": ["product", "category"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "competition",
+          "label": "Competition",
+          "options": [
+            "serie-a",
+            "premier-league",
+            "la-liga",
+            "bundesliga",
+            "ligue-1",
+            "champions-league",
+            "europa-league",
+            "other"
+          ],
+          "namespace": ["product", "competition"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "club",
+          "label": "Club",
+          "namespace": ["product", "club"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "season",
+          "label": "Season",
+          "description": "e.g., 2023-24",
+          "namespace": ["product", "season"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "object",
+          "name": "images",
+          "label": "Images",
+          "fields": [
+            {
+              "type": "image",
+              "name": "main",
+              "label": "Main Image",
+              "required": true,
+              "namespace": ["product", "images", "main"],
+              "searchable": false,
+              "uid": false
+            },
+            {
+              "type": "image",
+              "name": "gallery",
+              "label": "Gallery Images",
+              "list": true,
+              "namespace": ["product", "images", "gallery"],
+              "searchable": false,
+              "uid": false
+            }
+          ],
+          "namespace": ["product", "images"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "object",
+          "name": "sizes",
+          "label": "Available Sizes",
+          "list": true,
+          "fields": [
+            {
+              "type": "string",
+              "name": "size",
+              "label": "Size",
+              "required": true,
+              "options": ["XS", "S", "M", "L", "XL", "XXL"],
+              "namespace": ["product", "sizes", "size"],
+              "searchable": true,
+              "uid": false
+            },
+            {
+              "type": "number",
+              "name": "stock",
+              "label": "Stock Quantity",
+              "required": true,
+              "namespace": ["product", "sizes", "stock"],
+              "searchable": true,
+              "uid": false
+            }
+          ],
+          "namespace": ["product", "sizes"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "boolean",
+          "name": "allowCustomization",
+          "label": "Allow Name & Number Customization",
+          "description": "Enable player name and number personalization",
+          "namespace": ["product", "allowCustomization"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "number",
+          "name": "customizationPrice",
+          "label": "Customization Price (EUR)",
+          "description": "Additional cost for name + number",
+          "namespace": ["product", "customizationPrice"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "object",
+          "name": "patches",
+          "label": "Available Patches",
+          "list": true,
+          "fields": [
+            {
+              "type": "string",
+              "name": "id",
+              "label": "Patch ID",
+              "required": true,
+              "namespace": ["product", "patches", "id"],
+              "searchable": true,
+              "uid": false
+            },
+            {
+              "type": "string",
+              "name": "name",
+              "label": "Patch Name",
+              "required": true,
+              "namespace": ["product", "patches", "name"],
+              "searchable": true,
+              "uid": false
+            },
+            {
+              "type": "number",
+              "name": "price",
+              "label": "Patch Price (EUR)",
+              "required": true,
+              "namespace": ["product", "patches", "price"],
+              "searchable": true,
+              "uid": false
+            },
+            {
+              "type": "image",
+              "name": "image",
+              "label": "Patch Image",
+              "namespace": ["product", "patches", "image"],
+              "searchable": false,
+              "uid": false
+            }
+          ],
+          "namespace": ["product", "patches"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "boolean",
+          "name": "featured",
+          "label": "Featured Product",
+          "description": "Show in homepage featured section",
+          "namespace": ["product", "featured"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "boolean",
+          "name": "published",
+          "label": "Published",
+          "description": "Make product visible on site",
+          "namespace": ["product", "published"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "datetime",
+          "name": "createdAt",
+          "label": "Created At",
+          "namespace": ["product", "createdAt"],
+          "searchable": true,
+          "uid": false
+        }
+      ],
+      "namespace": ["product"]
+    },
+    {
+      "name": "category",
+      "label": "Categories",
+      "path": "content/categories",
+      "format": "json",
+      "fields": [
+        {
+          "type": "string",
+          "name": "name",
+          "label": "Category Name",
+          "required": true,
+          "namespace": ["category", "name"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "slug",
+          "label": "Slug",
+          "required": true,
+          "namespace": ["category", "slug"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "description",
+          "label": "Description",
+          "ui": { "component": "textarea" },
+          "namespace": ["category", "description"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "image",
+          "name": "image",
+          "label": "Category Image",
+          "namespace": ["category", "image"],
+          "searchable": false,
+          "uid": false
+        },
+        {
+          "type": "number",
+          "name": "order",
+          "label": "Display Order",
+          "description": "Lower numbers appear first",
+          "namespace": ["category", "order"],
+          "searchable": true,
+          "uid": false
+        }
+      ],
+      "namespace": ["category"]
+    },
+    {
+      "name": "review",
+      "label": "Reviews",
+      "path": "content/reviews",
+      "format": "json",
+      "fields": [
+        {
+          "type": "string",
+          "name": "author",
+          "label": "Author Name",
+          "required": true,
+          "namespace": ["review", "author"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "number",
+          "name": "rating",
+          "label": "Rating",
+          "required": true,
+          "description": "Rating from 1 to 5 stars",
+          "ui": {},
+          "namespace": ["review", "rating"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "content",
+          "label": "Review Content",
+          "required": true,
+          "ui": { "component": "textarea" },
+          "namespace": ["review", "content"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "productSlug",
+          "label": "Product Slug",
+          "required": true,
+          "description": "Slug of the product being reviewed",
+          "namespace": ["review", "productSlug"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "status",
+          "label": "Status",
+          "required": true,
+          "options": [
+            { "value": "draft", "label": "Draft" },
+            { "value": "published", "label": "Published" },
+            { "value": "rejected", "label": "Rejected" }
+          ],
+          "description": "Only published reviews will appear on the site",
+          "namespace": ["review", "status"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "datetime",
+          "name": "createdAt",
+          "label": "Created At",
+          "required": true,
+          "namespace": ["review", "createdAt"],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "email",
+          "label": "Author Email (optional)",
+          "description": "For contact purposes only, not displayed",
+          "namespace": ["review", "email"],
+          "searchable": true,
+          "uid": false
+        }
+      ],
+      "namespace": ["review"]
+    }
+  ],
+  "config": { "media": { "tina": { "publicFolder": "public", "mediaRoot": "uploads" } } }
+}

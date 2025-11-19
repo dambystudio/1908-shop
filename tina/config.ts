@@ -31,17 +31,39 @@ const schema = {
           },
         },
         {
+          type: 'string',
+          name: 'productType',
+          label: 'Product Type',
+          required: true,
+          options: [
+            'standard',
+            'longsleeve',
+            'player-version-adidas',
+            'player-version-other',
+            'retro',
+            'retro-longsleeve',
+            'kids-set',
+            'kids-jersey',
+            'kids-shorts',
+            'shorts-combo',
+            'tracksuit',
+          ],
+          description: 'Product type determines base pricing',
+        },
+        {
           type: 'number',
           name: 'basePrice',
           label: 'Base Price (EUR)',
           required: true,
+          description:
+            'Standard: €24.99, Longsleeve: €27.99, Player Adidas: €27.99, Player Other: €28.99, Retro: €27.99, Retro LS: €29.99, Kids Set: €31.99, Kids Jersey: €21.99, Kids Shorts: €17.99, Shorts Combo: €14.99, Tracksuit: €47.99-€77.99',
         },
         {
           type: 'string',
           name: 'category',
           label: 'Category',
           required: true,
-          options: ['retro', 'competition', 'mystery-box'],
+          options: ['retro', 'competition', 'mystery-box', 'kids', 'shorts', 'tracksuit'],
         },
         {
           type: 'string',
@@ -207,6 +229,74 @@ const schema = {
           name: 'order',
           label: 'Display Order',
           description: 'Lower numbers appear first',
+        },
+      ],
+    },
+    {
+      name: 'review',
+      label: 'Reviews',
+      path: 'content/reviews',
+      format: 'json',
+      fields: [
+        {
+          type: 'string',
+          name: 'author',
+          label: 'Author Name',
+          required: true,
+        },
+        {
+          type: 'number',
+          name: 'rating',
+          label: 'Rating',
+          required: true,
+          description: 'Rating from 1 to 5 stars',
+          ui: {
+            validate: (value: number) => {
+              if (value < 1 || value > 5) {
+                return 'Rating must be between 1 and 5'
+              }
+            },
+          },
+        },
+        {
+          type: 'string',
+          name: 'content',
+          label: 'Review Content',
+          required: true,
+          ui: {
+            component: 'textarea',
+          },
+        },
+        {
+          type: 'string',
+          name: 'productSlug',
+          label: 'Product Slug',
+          required: true,
+          description: 'Slug of the product being reviewed',
+        },
+        {
+          type: 'string',
+          name: 'status',
+          label: 'Status',
+          required: true,
+          options: [
+            { value: 'draft', label: 'Draft' },
+            { value: 'published', label: 'Published' },
+            { value: 'rejected', label: 'Rejected' },
+          ],
+          description: 'Only published reviews will appear on the site',
+        },
+        {
+          type: 'datetime',
+          name: 'createdAt',
+          label: 'Created At',
+          required: true,
+        },
+        {
+          type: 'string',
+          name: 'email',
+          label: 'Author Email (optional)',
+          description: 'For contact purposes only, not displayed',
         },
       ],
     },

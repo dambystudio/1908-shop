@@ -1,0 +1,35 @@
+{
+  "name": "Maglia Juventus 2024/25 Home Player Version",
+  "slug": "juventus-2024-25-home-player",
+  "description": "Maglia Player Version Adidas della Juventus stagione 2024/25. Tessuto tecnico Heat.Rdy, fit slim e dettagli premium. Qualità match worn dai professionisti.",
+  "productType": "player-version-adidas",
+  "basePrice": 27.99,
+  "category": "competition",
+  "competition": "serie-a",
+  "club": "Juventus",
+  "season": "2024-25",
+  "images": {
+    "main": "/milan.avif",
+    "gallery": []
+  },
+  "sizes": [
+    { "size": "S", "stock": 6 },
+    { "size": "M", "stock": 10 },
+    { "size": "L", "stock": 8 },
+    { "size": "XL", "stock": 4 },
+    { "size": "XXL", "stock": 2 }
+  ],
+  "allowCustomization": true,
+  "customizationPrice": 4,
+  "patches": [
+    {
+      "id": "serie-a-24-25",
+      "name": "Patch Serie A 2024/25",
+      "price": 2,
+      "image": "/milan.avif"
+    }
+  ],
+  "featured": false,
+  "published": true,
+  "createdAt": "2025-10-28T14:00:00.000Z"
+}

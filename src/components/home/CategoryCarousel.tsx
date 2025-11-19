@@ -1,202 +1,60 @@
-'use client'
-
-import { useState, useRef, useEffect } from 'react'
+import { ProductImage } from '@/components/ui/ProductImage'
 import Link from 'next/link'
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
 
-interface CategoryCard {
-  id: string
-  title: string
-  description?: string
+interface Category {
+  name: string
   image: string
-  href: string
+  link: string
 }
 
 interface CategoryCarouselProps {
-  title: string
-  cards: CategoryCard[]
+  categories: Category[]
 }
 
-export function CategoryCarousel({ title, cards }: CategoryCarouselProps) {
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const [canScrollLeft, setCanScrollLeft] = useState(false)
-  const [canScrollRight, setCanScrollRight] = useState(true)
-
-  const updateScrollButtons = () => {
-    const container = scrollContainerRef.current
-    if (!container) return
-
-    setCanScrollLeft(container.scrollLeft > 0)
-    setCanScrollRight(container.scrollLeft < container.scrollWidth - container.clientWidth - 10)
-  }
-
-  useEffect(() => {
-    const container = scrollContainerRef.current
-    if (!container) return
-
-    updateScrollButtons()
-    container.addEventListener('scroll', updateScrollButtons)
-    window.addEventListener('resize', updateScrollButtons)
-
-    return () => {
-      container.removeEventListener('scroll', updateScrollButtons)
-      window.removeEventListener('resize', updateScrollButtons)
-    }
-  }, [])
-
-  const scroll = (direction: 'left' | 'right') => {
-    const container = scrollContainerRef.current
-    if (!container) return
-
-    const scrollAmount = container.clientWidth * 0.8
-    const targetScroll =
-      container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount)
-
-    container.scrollTo({
-      left: targetScroll,
-      behavior: 'smooth',
-    })
-  }
-
+export function CategoryCarousel({ categories }: CategoryCarouselProps) {
   return (
-    <section className="relative py-8">
+    <section className="w-full bg-black py-20">
       <div className="container mx-auto px-4">
-        {/* Section Title */}
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 tracking-wide uppercase">{title}</h2>
-
-        {/* Carousel Container */}
-        <div className="relative group">
-          {/* Left Arrow */}
-          <button
-            onClick={() => scroll('left')}
-            disabled={!canScrollLeft}
-            className={`
-              absolute left-0 top-1/2 -translate-y-1/2 z-10
-              w-11 h-11 rounded-full bg-black/80 backdrop-blur-sm
-              flex items-center justify-center
-              transition-all duration-300 ease-out
-              ${canScrollLeft ? 'opacity-40 hover:opacity-90 hover:scale-110' : 'opacity-0 pointer-events-none'}
-              group-hover:opacity-90
-            `}
-            aria-label="Scorri a sinistra"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2.5}
-              stroke="currentColor"
-              className="w-6 h-6"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {categories.map((category, index) => (
+            <Link
+              key={index}
+              href={category.link}
+              className="group relative block overflow-hidden rounded-2xl aspect-[3/4] cursor-pointer"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
-          </button>
+              {/* Image Container */}
+              <div className="absolute inset-0">
+                <ProductImage
+                  src={category.image}
+                  alt={category.name}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+                {/* Dark overlay */}
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
 
-          {/* Right Arrow */}
-          <button
-            onClick={() => scroll('right')}
-            disabled={!canScrollRight}
-            className={`
-              absolute right-0 top-1/2 -translate-y-1/2 z-10
-              w-11 h-11 rounded-full bg-black/80 backdrop-blur-sm
-              flex items-center justify-center
-              transition-all duration-300 ease-out
-              ${canScrollRight ? 'opacity-40 hover:opacity-90 hover:scale-110' : 'opacity-0 pointer-events-none'}
-              group-hover:opacity-90
-            `}
-            aria-label="Scorri a destra"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-            </svg>
-          </button>
+                {/* Gradient for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80" />
+              </div>
 
-          {/* Cards Grid */}
-          <div
-            ref={scrollContainerRef}
-            className="
-              flex gap-6 overflow-x-auto scrollbar-hide
-              snap-x snap-mandatory
-              md:grid md:grid-cols-3 md:overflow-visible
-            "
-            style={{
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
-            }}
-          >
-            {cards.map((card) => (
-              <Link
-                key={card.id}
-                href={card.href}
-                className="
-                  relative group/card flex-shrink-0
-                  w-[85vw] sm:w-[45vw] md:w-auto
-                  aspect-[4/5] rounded-lg overflow-hidden
-                  snap-start
-                  transition-all duration-300
-                  hover:scale-[1.02]
-                "
-              >
-                {/* Card Image */}
-                <div className="relative w-full h-full">
-                  <Image
-                    src={card.image}
-                    alt={card.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover/card:scale-105"
-                  />
+              {/* Content Overlay */}
+              <div className="absolute inset-0 flex flex-col justify-end p-8">
+                <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
+                  <h3 className="font-bebas text-4xl tracking-wider text-white mb-2">
+                    {category.name}
+                  </h3>
+                  <div className="h-1 w-12 bg-[#D40000] transition-all duration-500 group-hover:w-full" />
 
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 transition-opacity duration-300 group-hover/card:from-black/90 group-hover/card:via-black/50" />
-
-                  {/* Content */}
-                  <div className="absolute inset-0 p-6 flex flex-col justify-between">
-                    {/* Title */}
-                    <h3 className="text-xl md:text-2xl font-bold uppercase tracking-wide text-white drop-shadow-lg">
-                      {card.title}
-                    </h3>
-
-                    {/* Bottom Content */}
-                    <div className="space-y-3">
-                      {card.description && (
-                        <p className="text-sm text-gray-300 line-clamp-2">{card.description}</p>
-                      )}
-
-                      {/* CTA Button */}
-                      <Button
-                        className="
-                          w-full bg-[#F5C400] hover:bg-[#F5C400]/90 text-black font-bold
-                          transition-all duration-300
-                          group-hover/card:translate-y-[-2px] group-hover/card:shadow-lg
-                        "
-                        size="lg"
-                      >
-                        ACQUISTA SUBITO
-                      </Button>
-                    </div>
+                  <div className="overflow-hidden h-0 group-hover:h-auto transition-all duration-500 opacity-0 group-hover:opacity-100 mt-4">
+                    <span className="text-sm font-medium text-white uppercase tracking-widest border border-white/30 px-4 py-2 rounded-full backdrop-blur-sm hover:bg-white hover:text-black transition-colors">
+                      Scopri Ora
+                    </span>
                   </div>
                 </div>
-              </Link>
-            ))}
-          </div>
-
-          {/* Progress Indicator */}
-          <div className="flex justify-center gap-2 mt-6 md:hidden">
-            {cards.map((_, index) => (
-              <div
-                key={index}
-                className="w-2 h-2 rounded-full bg-gray-600 transition-all duration-300"
-              />
-            ))}
-          </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

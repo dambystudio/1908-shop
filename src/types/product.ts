@@ -21,8 +21,21 @@ export interface Product {
   name: string
   slug: string
   description: string
+  productType:
+    | 'standard'
+    | 'longsleeve'
+    | 'player-version-adidas'
+    | 'player-version-other'
+    | 'retro'
+    | 'retro-longsleeve'
+    | 'kids-set'
+    | 'kids-jersey'
+    | 'kids-shorts'
+    | 'shorts-single'
+    | 'shorts-combo'
+    | 'tracksuit'
   basePrice: number
-  category: 'retro' | 'competition' | 'mystery-box'
+  category: 'retro' | 'competition' | 'mystery-box' | 'kids' | 'shorts' | 'tracksuit'
   competition?: string
   club?: string
   season?: string

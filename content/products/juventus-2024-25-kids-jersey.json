@@ -1,0 +1,34 @@
+{
+  "name": "Maglia Bambino Juventus 2024/25 Home",
+  "slug": "juventus-2024-25-kids-jersey",
+  "description": "Maglia bambino Juventus stagione 2024/25. Solo la maglia, senza pantaloncini. Tessuto confortevole e traspirante, perfetta per i giovani tifosi bianconeri.",
+  "productType": "kids-jersey",
+  "basePrice": 21.99,
+  "category": "kids",
+  "competition": "serie-a",
+  "club": "Juventus",
+  "season": "2024-25",
+  "images": {
+    "main": "/milan.avif",
+    "gallery": []
+  },
+  "sizes": [
+    { "size": "XS", "stock": 10 },
+    { "size": "S", "stock": 12 },
+    { "size": "M", "stock": 10 },
+    { "size": "L", "stock": 6 }
+  ],
+  "allowCustomization": true,
+  "customizationPrice": 4,
+  "patches": [
+    {
+      "id": "serie-a-24-25",
+      "name": "Patch Serie A 2024/25",
+      "price": 2,
+      "image": "/milan.avif"
+    }
+  ],
+  "featured": false,
+  "published": true,
+  "createdAt": "2025-10-28T19:00:00.000Z"
+}

@@ -1,0 +1,28 @@
+{
+  "name": "Maglia Roma Retro 2001 Manica Lunga",
+  "slug": "roma-retro-2001-longsleeve",
+  "description": "Maglia storica Roma stagione 2000/01 con maniche lunghe. La leggendaria maglia del terzo Scudetto giallorosso. Replica fedele con sponsor Kappa e INA Assitalia.",
+  "productType": "retro-longsleeve",
+  "basePrice": 29.99,
+  "category": "retro",
+  "competition": "serie-a",
+  "club": "Roma",
+  "season": "2000-01",
+  "images": {
+    "main": "/milan.avif",
+    "gallery": []
+  },
+  "sizes": [
+    { "size": "S", "stock": 4 },
+    { "size": "M", "stock": 6 },
+    { "size": "L", "stock": 5 },
+    { "size": "XL", "stock": 3 },
+    { "size": "XXL", "stock": 2 }
+  ],
+  "allowCustomization": true,
+  "customizationPrice": 4,
+  "patches": [],
+  "featured": false,
+  "published": true,
+  "createdAt": "2025-10-28T20:00:00.000Z"
+}

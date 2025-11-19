@@ -1,0 +1,28 @@
+{
+  "name": "Pantaloncini Milan 2024/25 Home",
+  "slug": "milan-2024-25-shorts-single",
+  "description": "Pantaloncini ufficiali Milan stagione 2024/25. Design rossonero con logo Puma e stemma ricamato. Disponibili singolarmente o in combo con la maglia.",
+  "productType": "shorts-single",
+  "basePrice": 17.99,
+  "category": "shorts",
+  "competition": "serie-a",
+  "club": "Milan",
+  "season": "2024-25",
+  "images": {
+    "main": "/milan.avif",
+    "gallery": []
+  },
+  "sizes": [
+    { "size": "S", "stock": 10 },
+    { "size": "M", "stock": 12 },
+    { "size": "L", "stock": 10 },
+    { "size": "XL", "stock": 6 },
+    { "size": "XXL", "stock": 3 }
+  ],
+  "allowCustomization": false,
+  "customizationPrice": 0,
+  "patches": [],
+  "featured": false,
+  "published": true,
+  "createdAt": "2025-10-28T17:00:00.000Z"
+}
