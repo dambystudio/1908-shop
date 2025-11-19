@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset body to white for Admin to ensure TinaCMS looks correct */
+body {
+  background-color: white;
+  color: black;
+}
