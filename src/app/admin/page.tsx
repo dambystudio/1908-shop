@@ -2,15 +2,20 @@
 
 import { useEffect, useState } from 'react'
 import config from '../../../tina/config'
+import tinaClient from '../../../tina/__generated__/client'
 
 type TinaAdminComponent = (props: { config: typeof config }) => JSX.Element
+type TinaCMSProviderComponent = (props: any) => JSX.Element
 
 export default function AdminPage() {
   const clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID
   const token = process.env.NEXT_PUBLIC_TINA_TOKEN
 
   const missingEnv = !clientId || !token
-  const [TinaAdminComp, setTinaAdminComp] = useState<TinaAdminComponent | null>(null)
+  const [components, setComponents] = useState<{
+    TinaAdmin: TinaAdminComponent
+    TinaCMSProvider: TinaCMSProviderComponent
+  } | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -20,7 +25,10 @@ export default function AdminPage() {
     import('tinacms')
       .then((mod) => {
         if (mounted) {
-          setTinaAdminComp(() => mod.TinaAdmin)
+          setComponents({
+            TinaAdmin: mod.TinaAdmin,
+            TinaCMSProvider: mod.default as unknown as TinaCMSProviderComponent,
+          })
         }
       })
       .catch((error: unknown) => {
@@ -85,7 +93,9 @@ export default function AdminPage() {
     )
   }
 
-  if (!TinaAdminComp) {
+  const tinaGraphqlVersion = process.env.NEXT_PUBLIC_TINA_GRAPHQL_VERSION || '1'
+
+  if (!components) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <p className="text-gray-400">Caricamento dashboard...</p>
@@ -93,5 +103,16 @@ export default function AdminPage() {
     )
   }
 
-  return <TinaAdminComp config={config} />
+  const { TinaAdmin, TinaCMSProvider } = components
+  const providerConfig = config as unknown as Record<string, unknown>
+
+  return (
+    <TinaCMSProvider
+      {...providerConfig}
+      client={tinaClient}
+      tinaGraphQLVersion={tinaGraphqlVersion}
+    >
+      <TinaAdmin config={config} />
+    </TinaCMSProvider>
+  )
 }
