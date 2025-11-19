@@ -9,13 +9,12 @@ export default function TinaWrapper() {
   const tinaGraphqlVersion = process.env.NEXT_PUBLIC_TINA_GRAPHQL_VERSION || '1.4'
 
   const cms = useMemo(() => {
-    return new TinaCMS({
+    const cmsInstance = new TinaCMS({
       enabled: true,
       sidebar: true,
-      apis: {
-        tina: tinaClient,
-      },
     })
+    cmsInstance.registerApi('tina', tinaClient)
+    return cmsInstance
   }, [])
 
   return (
