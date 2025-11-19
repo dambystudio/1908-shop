@@ -1,15 +1,40 @@
 'use client'
 
-import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
 import config from '../../../tina/config'
 
-const TinaAdmin = dynamic(() => import('tinacms').then((mod) => mod.TinaAdmin), { ssr: false })
+type TinaAdminComponent = (props: { config: typeof config }) => JSX.Element
 
 export default function AdminPage() {
   const clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID
   const token = process.env.NEXT_PUBLIC_TINA_TOKEN
 
   const missingEnv = !clientId || !token
+  const [TinaAdminComp, setTinaAdminComp] = useState<TinaAdminComponent | null>(null)
+  const [loadError, setLoadError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (missingEnv) return
+
+    let mounted = true
+    import('tinacms')
+      .then((mod) => {
+        if (mounted) {
+          setTinaAdminComp(() => mod.TinaAdmin)
+        }
+      })
+      .catch((error: unknown) => {
+        console.error('Failed to load TinaAdmin', error)
+        if (mounted) {
+          const message = error instanceof Error ? error.message : 'Errore sconosciuto'
+          setLoadError(message)
+        }
+      })
+
+    return () => {
+      mounted = false
+    }
+  }, [missingEnv])
 
   if (missingEnv) {
     return (
@@ -45,5 +70,28 @@ export default function AdminPage() {
     )
   }
 
-  return <TinaAdmin config={config} />
+  if (loadError) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+        <div className="max-w-xl space-y-4 text-center">
+          <h1 className="text-2xl font-semibold text-primary-red">Errore caricando TinaCMS</h1>
+          <p className="text-gray-300">{loadError}</p>
+          <p className="text-gray-400 text-sm">
+            Controlla la console del browser e verifica che le credenziali Tina Cloud e gli accessi
+            API siano corretti.
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!TinaAdminComp) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <p className="text-gray-400">Caricamento dashboard...</p>
+      </div>
+    )
+  }
+
+  return <TinaAdminComp config={config} />
 }
