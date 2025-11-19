@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
 import { ProductFilters, FilterOptions } from '@/components/product/ProductFilters'
-import { SearchBar } from '@/components/product/SearchBar'
 import { useProductSearch } from '@/hooks/use-product-search'
 import { trackSearch, trackProductListView } from '@/lib/analytics'
 import type { Product } from '@/types/product'
@@ -107,13 +106,6 @@ export function ProductListClient({ products }: ProductListClientProps) {
 
   return (
     <div className="space-y-6">
-      {/* Search Bar */}
-      <SearchBar
-        onSearch={setSearchQuery}
-        placeholder="Cerca per nome, club, competizione..."
-        debounceMs={300}
-      />
-
       {/* Filters */}
       <ProductFilters
         filters={filters}
