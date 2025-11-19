@@ -17,9 +17,12 @@ body {
   z-index: 1;
 }
 
-/* Fix potential z-index issues with sidebar */
-[class*='Sidebar'] {
-  z-index: 9999 !important;
+/* Ensure modals are on top and visible */
+[class*='Modal'],
+[class*='Overlay'],
+[class*='Popup'] {
+  z-index: 10000 !important;
+  pointer-events: auto !important;
 }
 
 /* Ensure no global styles interfere with pointer events */

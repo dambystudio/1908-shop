@@ -1,21 +1,25 @@
 'use client'
 
-import TinaCMSProvider from 'tinacms'
-import { TinaAdmin } from 'tinacms'
+import { TinaCMS, TinaProvider, TinaAdmin } from 'tinacms'
 import config from '../../../../tina/config'
 import tinaClient from '../../../../tina/__generated__/client'
+import { useMemo } from 'react'
 
 export default function TinaWrapper() {
   const tinaGraphqlVersion = process.env.NEXT_PUBLIC_TINA_GRAPHQL_VERSION || '1.4'
-  const providerConfig = config as unknown as Record<string, unknown>
+
+  const cms = useMemo(() => {
+    return new TinaCMS({
+      ...(config as any),
+      apis: {
+        tina: tinaClient,
+      },
+    })
+  }, [])
 
   return (
-    <TinaCMSProvider
-      {...(providerConfig as any)}
-      client={tinaClient}
-      tinaGraphQLVersion={tinaGraphqlVersion}
-    >
+    <TinaProvider cms={cms}>
       <TinaAdmin config={config} />
-    </TinaCMSProvider>
+    </TinaProvider>
   )
 }
