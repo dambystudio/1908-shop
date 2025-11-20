@@ -1,8 +1,12 @@
 import { defineConfig } from 'tinacms'
 
 const branch = process.env.TINA_BRANCH || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main'
-const clientId = process.env.TINA_CLIENT_ID || process.env.NEXT_PUBLIC_TINA_CLIENT_ID || ''
-const token = process.env.TINA_TOKEN || process.env.NEXT_PUBLIC_TINA_TOKEN || ''
+
+// Use environment variables for Tina Cloud
+// The read-only token is used for public data fetching
+// User authentication happens via OAuth for admin access
+const clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID || ''
+const token = process.env.NEXT_PUBLIC_TINA_TOKEN || ''
 
 // Complete schema for Stage 2 - Product & Category collections
 const schema = {
