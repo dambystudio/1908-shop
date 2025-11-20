@@ -311,7 +311,7 @@ const schema = {
 export default defineConfig({
   branch,
   clientId,
-  token, // Read-only token for data fetching
+  token,
   build: {
     outputFolder: 'admin',
     publicFolder: 'public',
@@ -321,11 +321,6 @@ export default defineConfig({
       mediaRoot: 'uploads',
       publicFolder: 'public',
     },
-  },
-  // Configure Tina Cloud authentication for admin access
-  authProvider: {
-    // Use Tina Cloud's built-in auth (requires user login)
-    type: 'tinacms-cloud',
   },
   schema: schema as any, // Type cast maintained for compatibility
 })
