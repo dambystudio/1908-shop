@@ -1,17 +1,25 @@
 'use client'
 
-import { TinaCMS } from 'tinacms'
-import { TinaAdmin } from 'tinacms'
+import { TinaCMS, TinaAdmin } from 'tinacms'
 import { useMemo } from 'react'
 import config from '../../../../tina/config'
 
 export default function TinaWrapper() {
   const cms = useMemo(() => {
-    return new TinaCMS({
+    const instance = new TinaCMS({
       enabled: true,
-      ...(config as any),
-    })
+      clientId: config.clientId || '',
+      branch: config.branch || 'main',
+      token: config.token || '',
+      schema: config.schema,
+    } as any)
+    return instance
   }, [])
 
-  return <TinaAdmin cms={cms} />
+  // Provide the CMS instance to children via context
+  if (typeof window !== 'undefined') {
+    ;(window as any).__TINA = cms
+  }
+
+  return <TinaAdmin config={config as any} />
 }
