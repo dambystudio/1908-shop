@@ -57,6 +57,16 @@ export interface Category {
   order?: number
 }
 
+export interface Review {
+  author: string
+  rating: number // 1-5
+  content: string
+  productSlug: string
+  status: 'draft' | 'published' | 'rejected'
+  createdAt: string
+  email?: string
+}
+
 export type Competition =
   | 'serie-a'
   | 'premier-league'
