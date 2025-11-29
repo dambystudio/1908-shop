@@ -21,7 +21,7 @@
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-toast": "^1.2.15",
-    "@tinacms/cli": "^1.11.0",
+    "@tinacms/cli": "^1.12.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "fuse.js": "^7.1.0",
@@ -32,7 +32,7 @@
     "react-hook-form": "^7.64.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
-    "tinacms": "^2.9.0",
+    "tinacms": "^2.10.0",
     "zod": "^4.1.12"
   },
   "devDependencies": {

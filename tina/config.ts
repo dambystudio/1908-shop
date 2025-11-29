@@ -1,14 +1,20 @@
 import { defineConfig } from 'tinacms'
 
-const branch = process.env.TINA_BRANCH || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main'
+// Branch detection with fallback order
+const branch =
+  process.env.GITHUB_HEAD_REF ||
+  process.env.VERCEL_GIT_COMMIT_REF ||
+  process.env.TINA_BRANCH ||
+  process.env.NEXT_PUBLIC_TINA_BRANCH ||
+  'main'
 
-// Use environment variables for Tina Cloud
-// The read-only token is used for public data fetching
-// User authentication happens via OAuth for admin access
-const clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID || ''
-const token = process.env.NEXT_PUBLIC_TINA_TOKEN || ''
+// Tina Cloud credentials
+const clientId = process.env.TINA_CLIENT_ID || process.env.NEXT_PUBLIC_TINA_CLIENT_ID || ''
+const token = process.env.TINA_TOKEN || process.env.NEXT_PUBLIC_TINA_TOKEN || ''
 
-// Complete schema for Stage 2 - Product & Category collections
+// Determine if we're in local development or cloud mode
+const isLocalMode = process.env.TINA_PUBLIC_IS_LOCAL === 'true'
+
 const schema = {
   collections: [
     {
@@ -326,5 +332,14 @@ export default defineConfig({
       publicFolder: 'public',
     },
   },
-  schema: schema as any, // Type cast maintained for compatibility
+  schema: schema as any,
+  // Enable search in cloud mode
+  search: token
+    ? {
+        tina: {
+          indexerToken: process.env.TINA_SEARCH_TOKEN || process.env.NEXT_PUBLIC_TINA_SEARCH_TOKEN,
+          stopwordLanguages: ['ita', 'eng'],
+        },
+      }
+    : undefined,
 })

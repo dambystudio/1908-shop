@@ -1,8 +1,14 @@
 // tina/config.ts
 import { defineConfig } from 'tinacms'
-var branch = process.env.TINA_BRANCH || process.env.NEXT_PUBLIC_TINA_BRANCH || 'main'
+var branch =
+  process.env.GITHUB_HEAD_REF ||
+  process.env.VERCEL_GIT_COMMIT_REF ||
+  process.env.TINA_BRANCH ||
+  process.env.NEXT_PUBLIC_TINA_BRANCH ||
+  'main'
 var clientId = process.env.TINA_CLIENT_ID || process.env.NEXT_PUBLIC_TINA_CLIENT_ID || ''
 var token = process.env.TINA_TOKEN || process.env.NEXT_PUBLIC_TINA_TOKEN || ''
+var isLocalMode = process.env.TINA_PUBLIC_IS_LOCAL === 'true'
 var schema = {
   collections: [
     {
@@ -320,6 +326,14 @@ var config_default = defineConfig({
     },
   },
   schema,
-  // Type cast maintained for compatibility
+  // Enable search in cloud mode
+  search: token
+    ? {
+        tina: {
+          indexerToken: process.env.TINA_SEARCH_TOKEN || process.env.NEXT_PUBLIC_TINA_SEARCH_TOKEN,
+          stopwordLanguages: ['ita', 'eng'],
+        },
+      }
+    : void 0,
 })
 export { config_default as default }
