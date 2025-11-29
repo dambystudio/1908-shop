@@ -318,6 +318,9 @@ const schema = {
   ],
 }
 
+// Search token - only enable search if this is explicitly set
+const searchToken = process.env.TINA_SEARCH_TOKEN || process.env.NEXT_PUBLIC_TINA_SEARCH_TOKEN
+
 export default defineConfig({
   branch,
   clientId,
@@ -333,11 +336,12 @@ export default defineConfig({
     },
   },
   schema: schema as any,
-  // Enable search in cloud mode
-  search: token
+  // Enable search ONLY when search token is explicitly provided
+  // This prevents TinaCMS from trying to build a local SQLite index (which fails on Vercel)
+  search: searchToken
     ? {
         tina: {
-          indexerToken: process.env.TINA_SEARCH_TOKEN || process.env.NEXT_PUBLIC_TINA_SEARCH_TOKEN,
+          indexerToken: searchToken,
           stopwordLanguages: ['ita', 'eng'],
         },
       }
