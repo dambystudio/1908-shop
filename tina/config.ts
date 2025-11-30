@@ -15,6 +15,35 @@ const token = process.env.TINA_TOKEN || process.env.NEXT_PUBLIC_TINA_TOKEN || ''
 // Determine if we're in local development or cloud mode
 const isLocalMode = process.env.TINA_PUBLIC_IS_LOCAL === 'true'
 
+// Default prices by product type
+const defaultPrices: Record<string, number> = {
+  standard: 24.99,
+  longsleeve: 27.99,
+  'player-version-adidas': 27.99,
+  'player-version-other': 28.99,
+  retro: 27.99,
+  'retro-longsleeve': 29.99,
+  'kids-set': 31.99,
+  'kids-jersey': 21.99,
+  'kids-shorts': 14.99,
+  'shorts-single': 17.99,
+  'shorts-combo': 14.99,
+  tracksuit: 47.99,
+}
+
+// Default customization price
+const DEFAULT_CUSTOMIZATION_PRICE = 4
+
+// Helper to generate slug from name
+const slugify = (text: string): string => {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/--+/g, '-')
+    .trim()
+}
+
 const schema = {
   collections: [
     {
@@ -22,6 +51,22 @@ const schema = {
       label: 'Products',
       path: 'content/products',
       format: 'json',
+      // Auto-generate filename from slug to avoid collisions
+      ui: {
+        filename: {
+          readonly: true,
+          slugify: (values: Record<string, unknown>) => {
+            const name = (values?.name as string) || 'new-product'
+            const season = (values?.season as string) || ''
+            const productType = (values?.productType as string) || ''
+            const baseSlug = slugify(name)
+            // Add season and type for uniqueness
+            const suffix = [season, productType].filter(Boolean).join('-')
+            const fullSlug = suffix ? `${baseSlug}-${slugify(suffix)}` : baseSlug
+            return fullSlug
+          },
+        },
+      },
       fields: [
         {
           type: 'string',
@@ -34,6 +79,10 @@ const schema = {
           name: 'slug',
           label: 'Slug',
           required: true,
+          ui: {
+            // Auto-generate slug from name
+            parse: (value: string) => slugify(value || ''),
+          },
         },
         {
           type: 'string',
@@ -50,18 +99,18 @@ const schema = {
           label: 'Product Type',
           required: true,
           options: [
-            'standard',
-            'longsleeve',
-            'player-version-adidas',
-            'player-version-other',
-            'retro',
-            'retro-longsleeve',
-            'kids-set',
-            'kids-jersey',
-            'kids-shorts',
-            'shorts-single',
-            'shorts-combo',
-            'tracksuit',
+            { value: 'standard', label: 'Standard (€24.99)' },
+            { value: 'longsleeve', label: 'Longsleeve (€27.99)' },
+            { value: 'player-version-adidas', label: 'Player Version Adidas (€27.99)' },
+            { value: 'player-version-other', label: 'Player Version Other (€28.99)' },
+            { value: 'retro', label: 'Retro (€27.99)' },
+            { value: 'retro-longsleeve', label: 'Retro Longsleeve (€29.99)' },
+            { value: 'kids-set', label: 'Kids Set (€31.99)' },
+            { value: 'kids-jersey', label: 'Kids Jersey (€21.99)' },
+            { value: 'kids-shorts', label: 'Kids Shorts (€14.99)' },
+            { value: 'shorts-single', label: 'Shorts Single (€17.99)' },
+            { value: 'shorts-combo', label: 'Shorts Combo (€14.99)' },
+            { value: 'tracksuit', label: 'Tracksuit (€47.99)' },
           ],
           description: 'Product type determines base pricing',
         },
@@ -69,9 +118,10 @@ const schema = {
           type: 'number',
           name: 'basePrice',
           label: 'Base Price (EUR)',
-          required: true,
-          description:
-            'Standard: €24.99, Longsleeve: €27.99, Player Adidas: €27.99, Player Other: €28.99, Retro: €27.99, Retro LS: €29.99, Kids Set: €31.99, Kids Jersey: €21.99, Kids Shorts: €14.99, Shorts Single: €17.99, Shorts Combo: €14.99, Tracksuit: €47.99-€77.99',
+          description: 'Auto-filled based on product type. You can modify if needed.',
+          ui: {
+            // Default value based on product type will be handled by defaultItem
+          },
         },
         {
           type: 'string',
@@ -104,7 +154,7 @@ const schema = {
           type: 'string',
           name: 'season',
           label: 'Season',
-          description: 'e.g., 2023-24',
+          description: 'e.g., 2024-25',
         },
         {
           type: 'object',
@@ -115,7 +165,7 @@ const schema = {
               type: 'image',
               name: 'main',
               label: 'Main Image',
-              required: true,
+              // Removed required to fix navigation bug
             },
             {
               type: 'image',
@@ -130,19 +180,26 @@ const schema = {
           name: 'sizes',
           label: 'Available Sizes',
           list: true,
+          ui: {
+            itemProps: (item: Record<string, unknown>) => ({
+              label: item?.size ? `${item.size} (Stock: ${item.stock || 0})` : 'New Size',
+            }),
+            defaultItem: {
+              size: 'M',
+              stock: 10,
+            },
+          },
           fields: [
             {
               type: 'string',
               name: 'size',
               label: 'Size',
-              required: true,
               options: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
             },
             {
               type: 'number',
               name: 'stock',
               label: 'Stock Quantity',
-              required: true,
             },
           ],
         },
@@ -150,37 +207,47 @@ const schema = {
           type: 'boolean',
           name: 'allowCustomization',
           label: 'Allow Name & Number Customization',
-          description: 'Enable player name and number personalization',
+          description: 'Enable player name and number personalization (default price: €4)',
         },
         {
           type: 'number',
           name: 'customizationPrice',
           label: 'Customization Price (EUR)',
-          description: 'Additional cost for name + number',
+          description: 'Additional cost for name + number. Default: €4',
+          ui: {
+            // Show default value hint
+          },
         },
         {
           type: 'object',
           name: 'patches',
           label: 'Available Patches',
           list: true,
+          ui: {
+            itemProps: (item: Record<string, unknown>) => ({
+              label: item?.name ? `${item.name} (€${item.price || 0})` : 'New Patch',
+            }),
+            defaultItem: {
+              id: '',
+              name: '',
+              price: 2.99,
+            },
+          },
           fields: [
             {
               type: 'string',
               name: 'id',
               label: 'Patch ID',
-              required: true,
             },
             {
               type: 'string',
               name: 'name',
               label: 'Patch Name',
-              required: true,
             },
             {
               type: 'number',
               name: 'price',
               label: 'Patch Price (EUR)',
-              required: true,
             },
             {
               type: 'image',
@@ -207,6 +274,22 @@ const schema = {
           label: 'Created At',
         },
       ],
+      // Default values for new products
+      defaultItem: () => ({
+        productType: 'standard',
+        basePrice: 24.99,
+        customizationPrice: DEFAULT_CUSTOMIZATION_PRICE,
+        allowCustomization: true,
+        published: false,
+        featured: false,
+        sizes: [
+          { size: 'S', stock: 10 },
+          { size: 'M', stock: 10 },
+          { size: 'L', stock: 10 },
+          { size: 'XL', stock: 10 },
+        ],
+        createdAt: new Date().toISOString(),
+      }),
     },
     {
       name: 'category',
