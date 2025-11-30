@@ -1,0 +1,37 @@
+{
+  "name": "Maglia Milan",
+  "slug": "milan",
+  "description": "maglia",
+  "productType": "standard",
+  "basePrice": 24.99,
+  "category": "competition",
+  "competition": "serie-a",
+  "club": "Milan",
+  "season": "2024-25",
+  "images": {
+    "main": "/uploads/1cddb9cfd329471666df2283579d.jpg"
+  },
+  "sizes": [
+    {
+      "size": "S",
+      "stock": 10
+    },
+    {
+      "size": "M",
+      "stock": 10
+    },
+    {
+      "size": "L",
+      "stock": 10
+    },
+    {
+      "size": "XL",
+      "stock": 10
+    }
+  ],
+  "allowCustomization": true,
+  "customizationPrice": 4,
+  "featured": false,
+  "published": true,
+  "createdAt": "2025-11-30T02:05:40.088Z"
+}
