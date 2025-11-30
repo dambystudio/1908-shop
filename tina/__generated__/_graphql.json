@@ -836,10 +836,7 @@
           "kind": "FieldDefinition",
           "name": { "kind": "Name", "value": "slug" },
           "arguments": [],
-          "type": {
-            "kind": "NonNullType",
-            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
-          }
+          "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
         },
         {
           "kind": "FieldDefinition",

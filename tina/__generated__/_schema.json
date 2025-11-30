@@ -21,9 +21,9 @@
         {
           "type": "string",
           "name": "slug",
-          "label": "Slug",
-          "required": true,
-          "ui": {},
+          "label": "Slug (URL)",
+          "description": "Auto-generated from product name. Used in the product URL.",
+          "ui": { "component": "hidden" },
           "namespace": ["product", "slug"],
           "searchable": true,
           "uid": false

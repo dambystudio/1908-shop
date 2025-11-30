@@ -22,9 +22,9 @@
           {
             "type": "string",
             "name": "slug",
-            "label": "Slug",
-            "required": true,
-            "ui": {},
+            "label": "Slug (URL)",
+            "description": "Auto-generated from product name. Used in the product URL.",
+            "ui": { "component": "hidden" },
             "namespace": ["product", "slug"],
             "searchable": true,
             "uid": false
@@ -1307,10 +1307,7 @@
             "kind": "FieldDefinition",
             "name": { "kind": "Name", "value": "slug" },
             "arguments": [],
-            "type": {
-              "kind": "NonNullType",
-              "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
-            }
+            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
           },
           {
             "kind": "FieldDefinition",

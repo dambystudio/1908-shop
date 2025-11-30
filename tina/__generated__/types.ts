@@ -217,7 +217,7 @@ export type Product = Node &
   Document & {
     __typename?: 'Product'
     name: Scalars['String']['output']
-    slug: Scalars['String']['output']
+    slug?: Maybe<Scalars['String']['output']>
     description: Scalars['String']['output']
     productType: Scalars['String']['output']
     basePrice?: Maybe<Scalars['Float']['output']>
@@ -541,7 +541,7 @@ export type ReviewMutation = {
 export type ProductPartsFragment = {
   __typename: 'Product'
   name: string
-  slug: string
+  slug?: string | null
   description: string
   productType: string
   basePrice?: number | null
@@ -603,7 +603,7 @@ export type ProductQuery = {
     __typename: 'Product'
     id: string
     name: string
-    slug: string
+    slug?: string | null
     description: string
     productType: string
     basePrice?: number | null
@@ -674,7 +674,7 @@ export type ProductConnectionQuery = {
         __typename: 'Product'
         id: string
         name: string
-        slug: string
+        slug?: string | null
         description: string
         productType: string
         basePrice?: number | null

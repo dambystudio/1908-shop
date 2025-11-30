@@ -18,6 +18,25 @@ var slugify = (text) => {
     .replace(/--+/g, '-')
     .trim()
 }
+var generateProductSlug = (values) => {
+  const name = values?.name || 'new-product'
+  const season = values?.season || ''
+  const productType = values?.productType || ''
+  const club = values?.club || ''
+  const parts = [name]
+  if (club && !name.toLowerCase().includes(club.toLowerCase())) {
+    parts.unshift(club)
+  }
+  if (season) {
+    parts.push(season)
+  }
+  if (productType && productType !== 'standard') {
+    parts.push(productType)
+  }
+  const baseSlug = slugify(parts.join(' '))
+  const timestamp = Date.now().toString(36).slice(-6)
+  return `${baseSlug}-${timestamp}`
+}
 var schema = {
   collections: [
     {
@@ -30,13 +49,7 @@ var schema = {
         filename: {
           readonly: true,
           slugify: (values) => {
-            const name = values?.name || 'new-product'
-            const season = values?.season || ''
-            const productType = values?.productType || ''
-            const baseSlug = slugify(name)
-            const suffix = [season, productType].filter(Boolean).join('-')
-            const fullSlug = suffix ? `${baseSlug}-${slugify(suffix)}` : baseSlug
-            return fullSlug
+            return generateProductSlug(values)
           },
         },
       },
@@ -50,11 +63,11 @@ var schema = {
         {
           type: 'string',
           name: 'slug',
-          label: 'Slug',
-          required: true,
+          label: 'Slug (URL)',
+          description: 'Auto-generated from product name. Used in the product URL.',
           ui: {
-            // Auto-generate slug from name
-            parse: (value) => slugify(value || ''),
+            // Make it readonly - auto-generated
+            component: 'hidden',
           },
         },
         {
@@ -248,21 +261,26 @@ var schema = {
         },
       ],
       // Default values for new products
-      defaultItem: () => ({
-        productType: 'standard',
-        basePrice: 24.99,
-        customizationPrice: DEFAULT_CUSTOMIZATION_PRICE,
-        allowCustomization: true,
-        published: false,
-        featured: false,
-        sizes: [
-          { size: 'S', stock: 10 },
-          { size: 'M', stock: 10 },
-          { size: 'L', stock: 10 },
-          { size: 'XL', stock: 10 },
-        ],
-        createdAt: /* @__PURE__ */ new Date().toISOString(),
-      }),
+      defaultItem: () => {
+        const timestamp = Date.now().toString(36).slice(-6)
+        return {
+          slug: `new-product-${timestamp}`,
+          // Will be updated when name is set
+          productType: 'standard',
+          basePrice: 24.99,
+          customizationPrice: DEFAULT_CUSTOMIZATION_PRICE,
+          allowCustomization: true,
+          published: false,
+          featured: false,
+          sizes: [
+            { size: 'S', stock: 10 },
+            { size: 'M', stock: 10 },
+            { size: 'L', stock: 10 },
+            { size: 'XL', stock: 10 },
+          ],
+          createdAt: /* @__PURE__ */ new Date().toISOString(),
+        }
+      },
     },
     {
       name: 'category',

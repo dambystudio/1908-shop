@@ -17,7 +17,10 @@ export async function getAllProducts(): Promise<Product[]> {
       jsonFiles.map(async (file) => {
         const filePath = path.join(PRODUCTS_DIR, file)
         const content = await fs.readFile(filePath, 'utf-8')
-        return JSON.parse(content) as Product
+        const product = JSON.parse(content) as Product
+        // Use filename as slug (without .json extension) for consistency
+        const filenameSlug = file.replace('.json', '')
+        return { ...product, slug: product.slug || filenameSlug }
       })
     )
 
@@ -31,12 +34,36 @@ export async function getAllProducts(): Promise<Product[]> {
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   try {
-    const filePath = path.join(PRODUCTS_DIR, `${slug}.json`)
-    const content = await fs.readFile(filePath, 'utf-8')
-    const product = JSON.parse(content) as Product
+    // First, try direct file lookup by slug as filename
+    const directPath = path.join(PRODUCTS_DIR, `${slug}.json`)
+    try {
+      const content = await fs.readFile(directPath, 'utf-8')
+      const product = JSON.parse(content) as Product
+      if (product.published !== false) {
+        // Ensure slug matches filename
+        return { ...product, slug }
+      }
+    } catch {
+      // File not found with direct name, search by slug field
+    }
 
-    // Return only if published
-    return product.published !== false ? product : null
+    // Search through all products for matching slug field
+    const files = await fs.readdir(PRODUCTS_DIR)
+    const jsonFiles = files.filter((file) => file.endsWith('.json'))
+
+    for (const file of jsonFiles) {
+      const filePath = path.join(PRODUCTS_DIR, file)
+      const content = await fs.readFile(filePath, 'utf-8')
+      const product = JSON.parse(content) as Product
+      const filenameSlug = file.replace('.json', '')
+
+      // Match by slug field OR filename
+      if ((product.slug === slug || filenameSlug === slug) && product.published !== false) {
+        return { ...product, slug: product.slug || filenameSlug }
+      }
+    }
+
+    return null
   } catch (error) {
     console.error(`Error loading product ${slug}:`, error)
     return null

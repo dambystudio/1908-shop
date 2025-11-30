@@ -112,7 +112,7 @@ type ProductPatches {
 
 type Product implements Node & Document {
   name: String!
-  slug: String!
+  slug: String
   description: String!
   productType: String!
   basePrice: Float
