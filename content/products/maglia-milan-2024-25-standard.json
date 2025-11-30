@@ -9,7 +9,10 @@
   "club": "Milan",
   "season": "2024-25",
   "images": {
-    "main": "/uploads/1cddb9cfd329471666df2283579d.jpg"
+    "main": "/uploads/1cddb9cfd329471666df2283579d.jpg",
+    "gallery": [
+      "/uploads/download.jpg"
+    ]
   },
   "sizes": [
     {
