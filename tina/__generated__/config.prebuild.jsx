@@ -9,6 +9,15 @@ var branch =
 var clientId = process.env.TINA_CLIENT_ID || process.env.NEXT_PUBLIC_TINA_CLIENT_ID || ''
 var token = process.env.TINA_TOKEN || process.env.NEXT_PUBLIC_TINA_TOKEN || ''
 var isLocalMode = process.env.TINA_PUBLIC_IS_LOCAL === 'true'
+var DEFAULT_CUSTOMIZATION_PRICE = 4
+var slugify = (text) => {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/--+/g, '-')
+    .trim()
+}
 var schema = {
   collections: [
     {
@@ -16,6 +25,21 @@ var schema = {
       label: 'Products',
       path: 'content/products',
       format: 'json',
+      // Auto-generate filename from slug to avoid collisions
+      ui: {
+        filename: {
+          readonly: true,
+          slugify: (values) => {
+            const name = values?.name || 'new-product'
+            const season = values?.season || ''
+            const productType = values?.productType || ''
+            const baseSlug = slugify(name)
+            const suffix = [season, productType].filter(Boolean).join('-')
+            const fullSlug = suffix ? `${baseSlug}-${slugify(suffix)}` : baseSlug
+            return fullSlug
+          },
+        },
+      },
       fields: [
         {
           type: 'string',
@@ -28,6 +52,10 @@ var schema = {
           name: 'slug',
           label: 'Slug',
           required: true,
+          ui: {
+            // Auto-generate slug from name
+            parse: (value) => slugify(value || ''),
+          },
         },
         {
           type: 'string',
@@ -44,18 +72,18 @@ var schema = {
           label: 'Product Type',
           required: true,
           options: [
-            'standard',
-            'longsleeve',
-            'player-version-adidas',
-            'player-version-other',
-            'retro',
-            'retro-longsleeve',
-            'kids-set',
-            'kids-jersey',
-            'kids-shorts',
-            'shorts-single',
-            'shorts-combo',
-            'tracksuit',
+            { value: 'standard', label: 'Standard (\u20AC24.99)' },
+            { value: 'longsleeve', label: 'Longsleeve (\u20AC27.99)' },
+            { value: 'player-version-adidas', label: 'Player Version Adidas (\u20AC27.99)' },
+            { value: 'player-version-other', label: 'Player Version Other (\u20AC28.99)' },
+            { value: 'retro', label: 'Retro (\u20AC27.99)' },
+            { value: 'retro-longsleeve', label: 'Retro Longsleeve (\u20AC29.99)' },
+            { value: 'kids-set', label: 'Kids Set (\u20AC31.99)' },
+            { value: 'kids-jersey', label: 'Kids Jersey (\u20AC21.99)' },
+            { value: 'kids-shorts', label: 'Kids Shorts (\u20AC14.99)' },
+            { value: 'shorts-single', label: 'Shorts Single (\u20AC17.99)' },
+            { value: 'shorts-combo', label: 'Shorts Combo (\u20AC14.99)' },
+            { value: 'tracksuit', label: 'Tracksuit (\u20AC47.99)' },
           ],
           description: 'Product type determines base pricing',
         },
@@ -63,9 +91,10 @@ var schema = {
           type: 'number',
           name: 'basePrice',
           label: 'Base Price (EUR)',
-          required: true,
-          description:
-            'Standard: \u20AC24.99, Longsleeve: \u20AC27.99, Player Adidas: \u20AC27.99, Player Other: \u20AC28.99, Retro: \u20AC27.99, Retro LS: \u20AC29.99, Kids Set: \u20AC31.99, Kids Jersey: \u20AC21.99, Kids Shorts: \u20AC14.99, Shorts Single: \u20AC17.99, Shorts Combo: \u20AC14.99, Tracksuit: \u20AC47.99-\u20AC77.99',
+          description: 'Auto-filled based on product type. You can modify if needed.',
+          ui: {
+            // Default value based on product type will be handled by defaultItem
+          },
         },
         {
           type: 'string',
@@ -98,7 +127,7 @@ var schema = {
           type: 'string',
           name: 'season',
           label: 'Season',
-          description: 'e.g., 2023-24',
+          description: 'e.g., 2024-25',
         },
         {
           type: 'object',
@@ -109,7 +138,7 @@ var schema = {
               type: 'image',
               name: 'main',
               label: 'Main Image',
-              required: true,
+              // Removed required to fix navigation bug
             },
             {
               type: 'image',
@@ -124,19 +153,26 @@ var schema = {
           name: 'sizes',
           label: 'Available Sizes',
           list: true,
+          ui: {
+            itemProps: (item) => ({
+              label: item?.size ? `${item.size} (Stock: ${item.stock || 0})` : 'New Size',
+            }),
+            defaultItem: {
+              size: 'M',
+              stock: 10,
+            },
+          },
           fields: [
             {
               type: 'string',
               name: 'size',
               label: 'Size',
-              required: true,
               options: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
             },
             {
               type: 'number',
               name: 'stock',
               label: 'Stock Quantity',
-              required: true,
             },
           ],
         },
@@ -144,37 +180,47 @@ var schema = {
           type: 'boolean',
           name: 'allowCustomization',
           label: 'Allow Name & Number Customization',
-          description: 'Enable player name and number personalization',
+          description: 'Enable player name and number personalization (default price: \u20AC4)',
         },
         {
           type: 'number',
           name: 'customizationPrice',
           label: 'Customization Price (EUR)',
-          description: 'Additional cost for name + number',
+          description: 'Additional cost for name + number. Default: \u20AC4',
+          ui: {
+            // Show default value hint
+          },
         },
         {
           type: 'object',
           name: 'patches',
           label: 'Available Patches',
           list: true,
+          ui: {
+            itemProps: (item) => ({
+              label: item?.name ? `${item.name} (\u20AC${item.price || 0})` : 'New Patch',
+            }),
+            defaultItem: {
+              id: '',
+              name: '',
+              price: 2.99,
+            },
+          },
           fields: [
             {
               type: 'string',
               name: 'id',
               label: 'Patch ID',
-              required: true,
             },
             {
               type: 'string',
               name: 'name',
               label: 'Patch Name',
-              required: true,
             },
             {
               type: 'number',
               name: 'price',
               label: 'Patch Price (EUR)',
-              required: true,
             },
             {
               type: 'image',
@@ -201,6 +247,22 @@ var schema = {
           label: 'Created At',
         },
       ],
+      // Default values for new products
+      defaultItem: () => ({
+        productType: 'standard',
+        basePrice: 24.99,
+        customizationPrice: DEFAULT_CUSTOMIZATION_PRICE,
+        allowCustomization: true,
+        published: false,
+        featured: false,
+        sizes: [
+          { size: 'S', stock: 10 },
+          { size: 'M', stock: 10 },
+          { size: 'L', stock: 10 },
+          { size: 'XL', stock: 10 },
+        ],
+        createdAt: /* @__PURE__ */ new Date().toISOString(),
+      }),
     },
     {
       name: 'category',
@@ -326,14 +388,7 @@ var config_default = defineConfig({
     },
   },
   schema,
-  // Enable search in cloud mode
-  search: token
-    ? {
-        tina: {
-          indexerToken: process.env.TINA_SEARCH_TOKEN || process.env.NEXT_PUBLIC_TINA_SEARCH_TOKEN,
-          stopwordLanguages: ['ita', 'eng'],
-        },
-      }
-    : void 0,
+  // Search is disabled to avoid SQLite build issues on Vercel
+  // Can be re-enabled later with proper TinaCloud search configuration
 })
 export { config_default as default }

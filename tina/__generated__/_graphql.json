@@ -749,10 +749,7 @@
           "kind": "FieldDefinition",
           "name": { "kind": "Name", "value": "main" },
           "arguments": [],
-          "type": {
-            "kind": "NonNullType",
-            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
-          }
+          "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
         },
         {
           "kind": "FieldDefinition",
@@ -775,19 +772,13 @@
           "kind": "FieldDefinition",
           "name": { "kind": "Name", "value": "size" },
           "arguments": [],
-          "type": {
-            "kind": "NonNullType",
-            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
-          }
+          "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
         },
         {
           "kind": "FieldDefinition",
           "name": { "kind": "Name", "value": "stock" },
           "arguments": [],
-          "type": {
-            "kind": "NonNullType",
-            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Float" } }
-          }
+          "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Float" } }
         }
       ]
     },
@@ -801,28 +792,19 @@
           "kind": "FieldDefinition",
           "name": { "kind": "Name", "value": "id" },
           "arguments": [],
-          "type": {
-            "kind": "NonNullType",
-            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
-          }
+          "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
         },
         {
           "kind": "FieldDefinition",
           "name": { "kind": "Name", "value": "name" },
           "arguments": [],
-          "type": {
-            "kind": "NonNullType",
-            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
-          }
+          "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
         },
         {
           "kind": "FieldDefinition",
           "name": { "kind": "Name", "value": "price" },
           "arguments": [],
-          "type": {
-            "kind": "NonNullType",
-            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Float" } }
-          }
+          "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Float" } }
         },
         {
           "kind": "FieldDefinition",
@@ -881,10 +863,7 @@
           "kind": "FieldDefinition",
           "name": { "kind": "Name", "value": "basePrice" },
           "arguments": [],
-          "type": {
-            "kind": "NonNullType",
-            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Float" } }
-          }
+          "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Float" } }
         },
         {
           "kind": "FieldDefinition",

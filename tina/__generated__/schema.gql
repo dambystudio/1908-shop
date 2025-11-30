@@ -94,19 +94,19 @@ type Collection {
 union DocumentNode = Product | Category | Review | Folder
 
 type ProductImages {
-  main: String!
+  main: String
   gallery: [String]
 }
 
 type ProductSizes {
-  size: String!
-  stock: Float!
+  size: String
+  stock: Float
 }
 
 type ProductPatches {
-  id: String!
-  name: String!
-  price: Float!
+  id: String
+  name: String
+  price: Float
   image: String
 }
 
@@ -115,7 +115,7 @@ type Product implements Node & Document {
   slug: String!
   description: String!
   productType: String!
-  basePrice: Float!
+  basePrice: Float
   category: String!
   competition: String
   club: String

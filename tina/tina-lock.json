@@ -8,6 +8,7 @@
         "label": "Products",
         "path": "content/products",
         "format": "json",
+        "ui": { "filename": { "readonly": true } },
         "fields": [
           {
             "type": "string",
@@ -23,6 +24,7 @@
             "name": "slug",
             "label": "Slug",
             "required": true,
+            "ui": {},
             "namespace": ["product", "slug"],
             "searchable": true,
             "uid": false
@@ -43,18 +45,18 @@
             "label": "Product Type",
             "required": true,
             "options": [
-              "standard",
-              "longsleeve",
-              "player-version-adidas",
-              "player-version-other",
-              "retro",
-              "retro-longsleeve",
-              "kids-set",
-              "kids-jersey",
-              "kids-shorts",
-              "shorts-single",
-              "shorts-combo",
-              "tracksuit"
+              { "value": "standard", "label": "Standard (€24.99)" },
+              { "value": "longsleeve", "label": "Longsleeve (€27.99)" },
+              { "value": "player-version-adidas", "label": "Player Version Adidas (€27.99)" },
+              { "value": "player-version-other", "label": "Player Version Other (€28.99)" },
+              { "value": "retro", "label": "Retro (€27.99)" },
+              { "value": "retro-longsleeve", "label": "Retro Longsleeve (€29.99)" },
+              { "value": "kids-set", "label": "Kids Set (€31.99)" },
+              { "value": "kids-jersey", "label": "Kids Jersey (€21.99)" },
+              { "value": "kids-shorts", "label": "Kids Shorts (€14.99)" },
+              { "value": "shorts-single", "label": "Shorts Single (€17.99)" },
+              { "value": "shorts-combo", "label": "Shorts Combo (€14.99)" },
+              { "value": "tracksuit", "label": "Tracksuit (€47.99)" }
             ],
             "description": "Product type determines base pricing",
             "namespace": ["product", "productType"],
@@ -65,8 +67,8 @@
             "type": "number",
             "name": "basePrice",
             "label": "Base Price (EUR)",
-            "required": true,
-            "description": "Standard: €24.99, Longsleeve: €27.99, Player Adidas: €27.99, Player Other: €28.99, Retro: €27.99, Retro LS: €29.99, Kids Set: €31.99, Kids Jersey: €21.99, Kids Shorts: €14.99, Shorts Single: €17.99, Shorts Combo: €14.99, Tracksuit: €47.99-€77.99",
+            "description": "Auto-filled based on product type. You can modify if needed.",
+            "ui": {},
             "namespace": ["product", "basePrice"],
             "searchable": true,
             "uid": false
@@ -111,7 +113,7 @@
             "type": "string",
             "name": "season",
             "label": "Season",
-            "description": "e.g., 2023-24",
+            "description": "e.g., 2024-25",
             "namespace": ["product", "season"],
             "searchable": true,
             "uid": false
@@ -125,7 +127,6 @@
                 "type": "image",
                 "name": "main",
                 "label": "Main Image",
-                "required": true,
                 "namespace": ["product", "images", "main"],
                 "searchable": false,
                 "uid": false
@@ -149,12 +150,12 @@
             "name": "sizes",
             "label": "Available Sizes",
             "list": true,
+            "ui": { "defaultItem": { "size": "M", "stock": 10 } },
             "fields": [
               {
                 "type": "string",
                 "name": "size",
                 "label": "Size",
-                "required": true,
                 "options": ["XS", "S", "M", "L", "XL", "XXL"],
                 "namespace": ["product", "sizes", "size"],
                 "searchable": true,
@@ -164,7 +165,6 @@
                 "type": "number",
                 "name": "stock",
                 "label": "Stock Quantity",
-                "required": true,
                 "namespace": ["product", "sizes", "stock"],
                 "searchable": true,
                 "uid": false
@@ -178,7 +178,7 @@
             "type": "boolean",
             "name": "allowCustomization",
             "label": "Allow Name & Number Customization",
-            "description": "Enable player name and number personalization",
+            "description": "Enable player name and number personalization (default price: €4)",
             "namespace": ["product", "allowCustomization"],
             "searchable": true,
             "uid": false
@@ -187,7 +187,8 @@
             "type": "number",
             "name": "customizationPrice",
             "label": "Customization Price (EUR)",
-            "description": "Additional cost for name + number",
+            "description": "Additional cost for name + number. Default: €4",
+            "ui": {},
             "namespace": ["product", "customizationPrice"],
             "searchable": true,
             "uid": false
@@ -197,12 +198,12 @@
             "name": "patches",
             "label": "Available Patches",
             "list": true,
+            "ui": { "defaultItem": { "id": "", "name": "", "price": 2.99 } },
             "fields": [
               {
                 "type": "string",
                 "name": "id",
                 "label": "Patch ID",
-                "required": true,
                 "namespace": ["product", "patches", "id"],
                 "searchable": true,
                 "uid": false
@@ -211,7 +212,6 @@
                 "type": "string",
                 "name": "name",
                 "label": "Patch Name",
-                "required": true,
                 "namespace": ["product", "patches", "name"],
                 "searchable": true,
                 "uid": false
@@ -220,7 +220,6 @@
                 "type": "number",
                 "name": "price",
                 "label": "Patch Price (EUR)",
-                "required": true,
                 "namespace": ["product", "patches", "price"],
                 "searchable": true,
                 "uid": false
@@ -1221,10 +1220,7 @@
             "kind": "FieldDefinition",
             "name": { "kind": "Name", "value": "main" },
             "arguments": [],
-            "type": {
-              "kind": "NonNullType",
-              "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
-            }
+            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
           },
           {
             "kind": "FieldDefinition",
@@ -1247,19 +1243,13 @@
             "kind": "FieldDefinition",
             "name": { "kind": "Name", "value": "size" },
             "arguments": [],
-            "type": {
-              "kind": "NonNullType",
-              "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
-            }
+            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
           },
           {
             "kind": "FieldDefinition",
             "name": { "kind": "Name", "value": "stock" },
             "arguments": [],
-            "type": {
-              "kind": "NonNullType",
-              "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Float" } }
-            }
+            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Float" } }
           }
         ]
       },
@@ -1273,28 +1263,19 @@
             "kind": "FieldDefinition",
             "name": { "kind": "Name", "value": "id" },
             "arguments": [],
-            "type": {
-              "kind": "NonNullType",
-              "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
-            }
+            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
           },
           {
             "kind": "FieldDefinition",
             "name": { "kind": "Name", "value": "name" },
             "arguments": [],
-            "type": {
-              "kind": "NonNullType",
-              "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
-            }
+            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } }
           },
           {
             "kind": "FieldDefinition",
             "name": { "kind": "Name", "value": "price" },
             "arguments": [],
-            "type": {
-              "kind": "NonNullType",
-              "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Float" } }
-            }
+            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Float" } }
           },
           {
             "kind": "FieldDefinition",
@@ -1353,10 +1334,7 @@
             "kind": "FieldDefinition",
             "name": { "kind": "Name", "value": "basePrice" },
             "arguments": [],
-            "type": {
-              "kind": "NonNullType",
-              "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Float" } }
-            }
+            "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Float" } }
           },
           {
             "kind": "FieldDefinition",

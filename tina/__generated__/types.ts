@@ -195,21 +195,21 @@ export type DocumentNode = Product | Category | Review | Folder
 
 export type ProductImages = {
   __typename?: 'ProductImages'
-  main: Scalars['String']['output']
+  main?: Maybe<Scalars['String']['output']>
   gallery?: Maybe<Array<Maybe<Scalars['String']['output']>>>
 }
 
 export type ProductSizes = {
   __typename?: 'ProductSizes'
-  size: Scalars['String']['output']
-  stock: Scalars['Float']['output']
+  size?: Maybe<Scalars['String']['output']>
+  stock?: Maybe<Scalars['Float']['output']>
 }
 
 export type ProductPatches = {
   __typename?: 'ProductPatches'
-  id: Scalars['String']['output']
-  name: Scalars['String']['output']
-  price: Scalars['Float']['output']
+  id?: Maybe<Scalars['String']['output']>
+  name?: Maybe<Scalars['String']['output']>
+  price?: Maybe<Scalars['Float']['output']>
   image?: Maybe<Scalars['String']['output']>
 }
 
@@ -220,7 +220,7 @@ export type Product = Node &
     slug: Scalars['String']['output']
     description: Scalars['String']['output']
     productType: Scalars['String']['output']
-    basePrice: Scalars['Float']['output']
+    basePrice?: Maybe<Scalars['Float']['output']>
     category: Scalars['String']['output']
     competition?: Maybe<Scalars['String']['output']>
     club?: Maybe<Scalars['String']['output']>
@@ -544,7 +544,7 @@ export type ProductPartsFragment = {
   slug: string
   description: string
   productType: string
-  basePrice: number
+  basePrice?: number | null
   category: string
   competition?: string | null
   club?: string | null
@@ -556,15 +556,19 @@ export type ProductPartsFragment = {
   createdAt?: string | null
   images?: {
     __typename: 'ProductImages'
-    main: string
+    main?: string | null
     gallery?: Array<string | null> | null
   } | null
-  sizes?: Array<{ __typename: 'ProductSizes'; size: string; stock: number } | null> | null
+  sizes?: Array<{
+    __typename: 'ProductSizes'
+    size?: string | null
+    stock?: number | null
+  } | null> | null
   patches?: Array<{
     __typename: 'ProductPatches'
-    id: string
-    name: string
-    price: number
+    id?: string | null
+    name?: string | null
+    price?: number | null
     image?: string | null
   } | null> | null
 }
@@ -602,7 +606,7 @@ export type ProductQuery = {
     slug: string
     description: string
     productType: string
-    basePrice: number
+    basePrice?: number | null
     category: string
     competition?: string | null
     club?: string | null
@@ -624,15 +628,19 @@ export type ProductQuery = {
     }
     images?: {
       __typename: 'ProductImages'
-      main: string
+      main?: string | null
       gallery?: Array<string | null> | null
     } | null
-    sizes?: Array<{ __typename: 'ProductSizes'; size: string; stock: number } | null> | null
+    sizes?: Array<{
+      __typename: 'ProductSizes'
+      size?: string | null
+      stock?: number | null
+    } | null> | null
     patches?: Array<{
       __typename: 'ProductPatches'
-      id: string
-      name: string
-      price: number
+      id?: string | null
+      name?: string | null
+      price?: number | null
       image?: string | null
     } | null> | null
   }
@@ -669,7 +677,7 @@ export type ProductConnectionQuery = {
         slug: string
         description: string
         productType: string
-        basePrice: number
+        basePrice?: number | null
         category: string
         competition?: string | null
         club?: string | null
@@ -691,15 +699,19 @@ export type ProductConnectionQuery = {
         }
         images?: {
           __typename: 'ProductImages'
-          main: string
+          main?: string | null
           gallery?: Array<string | null> | null
         } | null
-        sizes?: Array<{ __typename: 'ProductSizes'; size: string; stock: number } | null> | null
+        sizes?: Array<{
+          __typename: 'ProductSizes'
+          size?: string | null
+          stock?: number | null
+        } | null> | null
         patches?: Array<{
           __typename: 'ProductPatches'
-          id: string
-          name: string
-          price: number
+          id?: string | null
+          name?: string | null
+          price?: number | null
           image?: string | null
         } | null> | null
       } | null
