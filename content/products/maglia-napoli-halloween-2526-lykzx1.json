@@ -1,0 +1,40 @@
+{
+  "name": "Maglia Napoli Halloween",
+  "slug": "new-product-lyhreb",
+  "description": "Maglia Napoli Halloween",
+  "productType": "standard",
+  "basePrice": 24.99,
+  "category": "competition",
+  "competition": "serie-a",
+  "club": "Napoli",
+  "season": "25/26",
+  "images": {
+    "main": "/uploads/e5ac37cf.jpg",
+    "gallery": [
+      "/uploads/955b6c4c.jpg"
+    ]
+  },
+  "sizes": [
+    {
+      "size": "S",
+      "stock": 10
+    },
+    {
+      "size": "M",
+      "stock": 10
+    },
+    {
+      "size": "L",
+      "stock": 10
+    },
+    {
+      "size": "XL",
+      "stock": 10
+    }
+  ],
+  "allowCustomization": true,
+  "customizationPrice": 4,
+  "featured": false,
+  "published": false,
+  "createdAt": "2025-11-30T16:50:17.459Z"
+}
